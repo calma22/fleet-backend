@@ -67,12 +67,16 @@
     attribution: "© OpenStreetMap"
   }).addTo(map);
 
-  // 🔧 FIX CRITICO LEAFLET (post-reload)
+  // 🔧 FIX Leaflet post-reload
   setTimeout(() => {
     map.invalidateSize();
   }, 200);
 
-  const markers = {};
+  /* =========================
+     LAYER GROUP (FIX DEFINITIVO)
+  ========================= */
+
+  const shipLayer = L.layerGroup().addTo(map);
 
   /* =========================
      ICONA NAVE
@@ -104,6 +108,9 @@
       const ships = await res.json();
       const status = document.getElementById("status");
 
+      // 🔥 PULIZIA TOTALE OGNI UPDATE (chiave del fix)
+      shipLayer.clearLayers();
+
       if (!ships || ships.length === 0) {
         status.style.display = "block";
         return;
@@ -114,29 +121,20 @@
       ships.forEach(ship => {
         if (ship.lat == null || ship.lon == null) return;
 
-        // 🔒 FORZIAMO NUMERI
         const lat = Number(ship.lat);
         const lon = Number(ship.lon);
         if (Number.isNaN(lat) || Number.isNaN(lon)) return;
 
-        const pos = [lat, lon];
-
-        if (!markers[ship.mmsi]) {
-          markers[ship.mmsi] = L.marker(pos, {
-            icon: shipIcon(ship.heading, ship.simulated)
-          })
-          .addTo(map)
-          .bindPopup(`
-            <b>${ship.name || "Unknown ship"}</b><br/>
-            MMSI: ${ship.mmsi}<br/>
-            Speed: ${ship.speed ?? "-"} kn<br/>
-            ${ship.simulated ? "SIMULATED" : "LIVE AIS"}
-          `);
-        } else {
-          markers[ship.mmsi]
-            .setLatLng(pos)
-            .setIcon(shipIcon(ship.heading, ship.simulated));
-        }
+        L.marker([lat, lon], {
+          icon: shipIcon(ship.heading, ship.simulated)
+        })
+        .addTo(shipLayer)
+        .bindPopup(`
+          <b>${ship.name || "Unknown ship"}</b><br/>
+          MMSI: ${ship.mmsi}<br/>
+          Speed: ${ship.speed ?? "-"} kn<br/>
+          ${ship.simulated ? "SIMULATED" : "LIVE AIS"}
+        `);
       });
 
     } catch (err) {
