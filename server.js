@@ -12,11 +12,7 @@ const PORT = process.env.PORT || 3000;
  * (navi molto attive per test + la tua)
  */
 const MMSI_LIST = [
-  "211331640", // cargo molto attivo (test)
-  "249097000", // tanker
-  "235091089", // container
-  "248995000"  // tua nave
-  "366970000", // US cargo super attivo
+  "366970000", // US cargo, super attivo
   "366988000", // tanker
   "367673000"  // container
 ];
