@@ -3,7 +3,8 @@ import WebSocket from "ws";
 import fs from "fs";
 
 const PORT = process.env.PORT || 3000;
-const AISSTREAM_KEY = process.env.AISSTREAM_KEY;
+const AISSTREAM_KEY =
+  process.env.AISSTREAM_KEY || process.env.AISSTREAM_API_KEY;
 
 const app = express();
 app.use(express.static("public"));
