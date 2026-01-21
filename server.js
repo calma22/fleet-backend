@@ -1,14 +1,34 @@
 import WebSocket from "ws";
 import express from "express";
 
+/**
+ * CONFIG
+ */
 const AIS_API_KEY = process.env.AISSTREAM_API_KEY;
-const MMSI = "248995000"; // nave test
-let lastPosition = null;
+const PORT = process.env.PORT || 3000;
 
-// --- WebSocket AISStream ---
+/**
+ * MMSI DA ASCOLTARE
+ * (navi molto attive per test + la tua)
+ */
+const MMSI_LIST = [
+  "211331640", // cargo molto attivo (test)
+  "249097000", // tanker
+  "235091089", // container
+  "248995000"  // tua nave
+];
+
+/**
+ * Stato in memoria
+ */
+const ships = {};
+
+/**
+ * WEBSOCKET AISSTREAM
+ */
 const ws = new WebSocket("wss://stream.aisstream.io/v0/stream", {
   headers: {
-    "Authorization": `Bearer ${AIS_API_KEY}`
+    Authorization: `Bearer ${AIS_API_KEY}`
   }
 });
 
@@ -16,36 +36,55 @@ ws.on("open", () => {
   console.log("Connected to AISStream");
 
   ws.send(JSON.stringify({
-    "APIKey": AIS_API_KEY,
-    "BoundingBoxes": [[[-90, -180], [90, 180]]],
-    "FiltersShipMMSI": [MMSI]
+    APIKey: AIS_API_KEY,
+    BoundingBoxes: [[[-90, -180], [90, 180]]],
+    FiltersShipMMSI: MMSI_LIST
   }));
 });
 
 ws.on("message", (data) => {
-  const msg = JSON.parse(data);
+  try {
+    const msg = JSON.parse(data);
 
-  if (msg.MessageType === "PositionReport") {
-    lastPosition = {
-      lat: msg.Message.PositionReport.Latitude,
-      lon: msg.Message.PositionReport.Longitude,
-      speed: msg.Message.PositionReport.Sog,
-      heading: msg.Message.PositionReport.Cog,
-      timestamp: msg.MetaData.time_utc
-    };
+    if (msg.MessageType === "PositionReport") {
+      const pr = msg.Message.PositionReport;
+      const mmsi = msg.MetaData.MMSI;
+
+      ships[mmsi] = {
+        mmsi,
+        lat: pr.Latitude,
+        lon: pr.Longitude,
+        speed: pr.Sog,
+        heading: pr.Cog,
+        timestamp: msg.MetaData.time_utc
+      };
+    }
+  } catch (err) {
+    console.error("Invalid AIS message", err);
   }
 });
 
-// --- HTTP API ---
+ws.on("error", (err) => {
+  console.error("WebSocket error", err);
+});
+
+/**
+ * HTTP API
+ */
 const app = express();
+
+app.get("/ships", (req, res) => {
+  res.json(Object.values(ships));
+});
+
 app.get("/ship", (req, res) => {
-  if (!lastPosition) {
+  const first = Object.values(ships)[0];
+  if (!first) {
     return res.json({ status: "waiting_for_data" });
   }
-  res.json(lastPosition);
+  res.json(first);
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Backend running");
+app.listen(PORT, () => {
+  console.log("Backend running on port", PORT);
 });
-
