@@ -21,16 +21,18 @@
       height: 100%;
     }
 
+    /* ICONE NAVI */
     .ship-icon {
       font-size: 18px;
       transform-origin: center;
-      color: #00ff00;
+      color: #00ff00; /* LIVE AIS */
     }
 
-    .simulated {
-      color: red;
+    .ship-icon.simulated {
+      color: red; /* SIMULATED */
     }
 
+    /* STATUS OVERLAY */
     #status {
       position: absolute;
       bottom: 20px;
@@ -43,6 +45,7 @@
       font-family: sans-serif;
       font-size: 14px;
       z-index: 1000;
+      display: none;
     }
   </style>
 </head>
@@ -54,20 +57,35 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
+  /* =========================
+     MAP INIT
+  ========================= */
+
   const map = L.map("map").setView([20, 0], 2);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap"
   }).addTo(map);
 
+  // 🔧 FIX CRITICO LEAFLET (post-reload)
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 200);
+
   const markers = {};
 
-  function shipIcon(heading, simulated) {
+  /* =========================
+     ICONA NAVE
+  ========================= */
+
+  function shipIcon(heading = 0, simulated = false) {
     return L.divIcon({
       className: "",
       html: `
-        <div class="ship-icon ${simulated ? "simulated" : ""}"
-             style="transform: rotate(${heading || 0}deg)">
+        <div
+          class="ship-icon ${simulated ? "simulated" : ""}"
+          style="transform: rotate(${heading}deg)"
+        >
           ▲
         </div>
       `,
@@ -76,43 +94,59 @@
     });
   }
 
+  /* =========================
+     UPDATE NAVI
+  ========================= */
+
   async function updateShips() {
-    const res = await fetch("/ships");
-    const ships = await res.json();
-    const status = document.getElementById("status");
+    try {
+      const res = await fetch("/ships", { cache: "no-store" });
+      const ships = await res.json();
+      const status = document.getElementById("status");
 
-    if (ships.length === 0) {
-      status.style.display = "block";
-      return;
-    } else {
-      status.style.display = "none";
-    }
-
-    ships.forEach(ship => {
-      if (!ship.lat || !ship.lon) return;
-
-      const pos = [ship.lat, ship.lon];
-
-      if (!markers[ship.mmsi]) {
-        markers[ship.mmsi] = L.marker(pos, {
-          icon: shipIcon(ship.heading, ship.simulated)
-        })
-        .addTo(map)
-        .bindPopup(`
-          <b>${ship.name}</b><br/>
-          MMSI: ${ship.mmsi}<br/>
-          Speed: ${ship.speed} kn<br/>
-          ${ship.simulated ? "SIMULATED" : "LIVE AIS"}
-        `);
-
-        map.setView(pos, 5);
+      if (!ships || ships.length === 0) {
+        status.style.display = "block";
+        return;
       } else {
-        markers[ship.mmsi]
-          .setLatLng(pos)
-          .setIcon(shipIcon(ship.heading, ship.simulated));
+        status.style.display = "none";
       }
-    });
+
+      ships.forEach(ship => {
+        if (ship.lat == null || ship.lon == null) return;
+
+        // 🔒 FORZIAMO NUMERI
+        const lat = Number(ship.lat);
+        const lon = Number(ship.lon);
+        if (Number.isNaN(lat) || Number.isNaN(lon)) return;
+
+        const pos = [lat, lon];
+
+        if (!markers[ship.mmsi]) {
+          markers[ship.mmsi] = L.marker(pos, {
+            icon: shipIcon(ship.heading, ship.simulated)
+          })
+          .addTo(map)
+          .bindPopup(`
+            <b>${ship.name || "Unknown ship"}</b><br/>
+            MMSI: ${ship.mmsi}<br/>
+            Speed: ${ship.speed ?? "-"} kn<br/>
+            ${ship.simulated ? "SIMULATED" : "LIVE AIS"}
+          `);
+        } else {
+          markers[ship.mmsi]
+            .setLatLng(pos)
+            .setIcon(shipIcon(ship.heading, ship.simulated));
+        }
+      });
+
+    } catch (err) {
+      console.error("Error fetching ships:", err);
+    }
   }
+
+  /* =========================
+     START LOOP
+  ========================= */
 
   updateShips();
   setInterval(updateShips, 30000);
