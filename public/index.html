@@ -22,19 +22,34 @@
     }
 
     .ship-icon {
-      color: green;
       font-size: 18px;
       transform-origin: center;
+      color: #00ff00;
     }
 
     .simulated {
       color: red;
+    }
+
+    #status {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-family: sans-serif;
+      font-size: 14px;
+      z-index: 1000;
     }
   </style>
 </head>
 <body>
 
 <div id="map"></div>
+<div id="status">Waiting for live AIS data…</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -51,10 +66,8 @@
     return L.divIcon({
       className: "",
       html: `
-        <div
-          class="ship-icon ${simulated ? "simulated" : ""}"
-          style="transform: rotate(${heading}deg)"
-        >
+        <div class="ship-icon ${simulated ? "simulated" : ""}"
+             style="transform: rotate(${heading || 0}deg)">
           ▲
         </div>
       `,
@@ -66,8 +79,14 @@
   async function updateShips() {
     const res = await fetch("/ships");
     const ships = await res.json();
+    const status = document.getElementById("status");
 
-    console.log("Ships received:", ships.length);
+    if (ships.length === 0) {
+      status.style.display = "block";
+      return;
+    } else {
+      status.style.display = "none";
+    }
 
     ships.forEach(ship => {
       if (!ship.lat || !ship.lon) return;
@@ -80,10 +99,10 @@
         })
         .addTo(map)
         .bindPopup(`
-          <b>MMSI:</b> ${ship.mmsi}<br/>
-          <b>Speed:</b> ${ship.speed} kn<br/>
-          <b>Heading:</b> ${ship.heading}°<br/>
-          <b>${ship.simulated ? "SIMULATED" : "LIVE AIS"}</b>
+          <b>${ship.name}</b><br/>
+          MMSI: ${ship.mmsi}<br/>
+          Speed: ${ship.speed} kn<br/>
+          ${ship.simulated ? "SIMULATED" : "LIVE AIS"}
         `);
 
         map.setView(pos, 5);
@@ -101,4 +120,3 @@
 
 </body>
 </html>
-
