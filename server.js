@@ -4,7 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 /* ==========================
-   PATH SETUP (ESM)
+   PATH (necessario per ESM)
 ========================== */
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,22 +25,32 @@ const ships = {};
 let lastRealDataTimestamp = null;
 
 /* ==========================
-   SIMULAZIONE FALLBACK
+   SIMULAZIONE (FALLBACK)
 ========================== */
 
 function simulateShips() {
   const now = new Date().toISOString();
+  const baseLat = 43.30;
+  const baseLon = 10.50;
 
   ships["SIM-1"] = {
     mmsi: "SIM-1",
-    lat: 43.3 + Math.sin(Date.now() / 60000) * 0.1,
-    lon: 10.5 + Math.cos(Date.now() / 60000) * 0.1,
+    lat: baseLat + Math.sin(Date.now() / 60000) * 0.1,
+    lon: baseLon + Math.cos(Date.now() / 60000) * 0.1,
     speed: 12,
     heading: (Date.now() / 1000) % 360,
     timestamp: now,
     simulated: true
   };
 }
+
+/* 🔥 CREA SUBITO UNA NAVE SIMULATA ALL'AVVIO */
+simulateShips();
+
+/* ==========================
+   TIMER FALLBACK
+   (se non arrivano AIS veri)
+========================== */
 
 setInterval(() => {
   if (
@@ -97,18 +107,27 @@ ws.on("message", (data) => {
   }
 });
 
+ws.on("error", (err) => {
+  console.error("WebSocket error:", err.message);
+});
+
 /* ==========================
    EXPRESS SERVER
 ========================== */
 
 const app = express();
 
-// 🔥 SERVE IL FRONTEND
+/* 🔥 SERVE IL FRONTEND */
 app.use(express.static(path.join(__dirname, "public")));
 
-// API
+/* API */
 app.get("/ships", (req, res) => {
   res.json(Object.values(ships));
+});
+
+/* ROOT SAFETY (extra sicurezza) */
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {
