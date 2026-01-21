@@ -1,7 +1,32 @@
 {
   "fleet": [
-    { "mmsi": "247083000", "name": "CRUISE 1" },
-    { "mmsi": "311000123", "name": "CRUISE 2" },
-    { "mmsi": "356970000", "name": "CARGO TEST" }
+    { "mmsi": "247083000", "name": "EU Cargo 1" },
+    { "mmsi": "247257900", "name": "EU Cargo 2" },
+    { "mmsi": "247374200", "name": "EU Cargo 3" },
+
+    { "mmsi": "311000123", "name": "US Cargo 1" },
+    { "mmsi": "366970000", "name": "US Cargo 2" },
+    { "mmsi": "367168000", "name": "US Cargo 3" },
+
+    { "mmsi": "356970000", "name": "Asia Cargo 1" },
+    { "mmsi": "356991000", "name": "Asia Cargo 2" },
+    { "mmsi": "357191000", "name": "Asia Cargo 3" },
+
+    { "mmsi": "538006178", "name": "Cruise Med 1" },
+    { "mmsi": "538006312", "name": "Cruise Med 2" },
+    { "mmsi": "538006454", "name": "Cruise Med 3" },
+
+    { "mmsi": "232002785", "name": "Tanker Africa 1" },
+    { "mmsi": "232003114", "name": "Tanker Africa 2" },
+
+    { "mmsi": "477552100", "name": "Asia Tanker 1" },
+    { "mmsi": "477553000", "name": "Asia Tanker 2" },
+
+    { "mmsi": "431000000", "name": "Japan Cargo 1" },
+    { "mmsi": "431001234", "name": "Japan Cargo 2" },
+    { "mmsi": "311001178", "name": "Icon of The Seas" },
+
+    { "mmsi": "636091234", "name": "Middle East Cargo 1" },
+    { "mmsi": "636092345", "name": "Middle East Cargo 2" }
   ]
 }
