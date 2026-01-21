@@ -1,0 +1,7 @@
+{
+  "fleet": [
+    { "mmsi": "247083000", "name": "CRUISE 1" },
+    { "mmsi": "311000123", "name": "CRUISE 2" },
+    { "mmsi": "356970000", "name": "CARGO TEST" }
+  ]
+}
