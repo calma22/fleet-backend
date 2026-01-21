@@ -1,30 +1,60 @@
 import WebSocket from "ws";
 import express from "express";
 
-/**
- * CONFIG
- */
+/* ==========================
+   CONFIG
+========================== */
+
 const AIS_API_KEY = process.env.AISSTREAM_API_KEY;
 const PORT = process.env.PORT || 3000;
 
-/**
- * MMSI DA ASCOLTARE
- * (navi molto attive per test + la tua)
- */
-const MMSI_LIST = [
-  "366970000", // US cargo, super attivo
-  "366988000", // tanker
-  "367673000"  // container
-];
+/* ==========================
+   STATO IN MEMORIA
+========================== */
 
-/**
- * Stato in memoria
- */
 const ships = {};
+let lastRealDataTimestamp = null;
 
-/**
- * WEBSOCKET AISSTREAM
- */
+/* ==========================
+   FUNZIONE DI SIMULAZIONE
+========================== */
+
+function simulateShips() {
+  const now = new Date().toISOString();
+  const baseLat = 43.30;
+  const baseLon = 10.50;
+
+  ships["SIM-1"] = {
+    mmsi: "SIM-1",
+    lat: baseLat + Math.sin(Date.now() / 60000) * 0.05,
+    lon: baseLon + Math.cos(Date.now() / 60000) * 0.05,
+    speed: 14,
+    heading: (Date.now() / 1000) % 360,
+    timestamp: now,
+    simulated: true
+  };
+}
+
+/* ==========================
+   TIMER FALLBACK
+   (se non arrivano AIS veri)
+========================== */
+
+setInterval(() => {
+  const now = Date.now();
+
+  if (
+    !lastRealDataTimestamp ||
+    now - lastRealDataTimestamp > 2 * 60 * 1000 // 2 minuti
+  ) {
+    simulateShips();
+  }
+}, 15000);
+
+/* ==========================
+   WEBSOCKET AISSTREAM
+========================== */
+
 const ws = new WebSocket("wss://stream.aisstream.io/v0/stream", {
   headers: {
     Authorization: `Bearer ${AIS_API_KEY}`
@@ -36,8 +66,7 @@ ws.on("open", () => {
 
   ws.send(JSON.stringify({
     APIKey: AIS_API_KEY,
-    BoundingBoxes: [[[-90, -180], [90, 180]]],
-    FiltersShipMMSI: MMSI_LIST
+    BoundingBoxes: [[[-90, -180], [90, 180]]]
   }));
 });
 
@@ -55,33 +84,33 @@ ws.on("message", (data) => {
         lon: pr.Longitude,
         speed: pr.Sog,
         heading: pr.Cog,
-        timestamp: msg.MetaData.time_utc
+        timestamp: msg.MetaData.time_utc,
+        simulated: false
       };
+
+      lastRealDataTimestamp = Date.now();
     }
   } catch (err) {
-    console.error("Invalid AIS message", err);
+    console.error("Invalid AIS message");
   }
 });
 
 ws.on("error", (err) => {
-  console.error("WebSocket error", err);
+  console.error("WebSocket error", err.message);
 });
 
-/**
- * HTTP API
- */
+/* ==========================
+   HTTP SERVER
+========================== */
+
 const app = express();
 
 app.get("/ships", (req, res) => {
   res.json(Object.values(ships));
 });
 
-app.get("/ship", (req, res) => {
-  const first = Object.values(ships)[0];
-  if (!first) {
-    return res.json({ status: "waiting_for_data" });
-  }
-  res.json(first);
+app.get("/", (req, res) => {
+  res.send("AIS backend running");
 });
 
 app.listen(PORT, () => {
