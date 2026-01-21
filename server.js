@@ -18,7 +18,7 @@ const MMSI_LIST = [
   "248995000"  // tua nave
   "366970000", // US cargo, super attivo
   "366988000", // tanker
-  "367673000"  // container
+  "367673000",  // container
 ];
 
 /**
