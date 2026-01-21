@@ -1,5 +1,14 @@
 import WebSocket from "ws";
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+
+/* ==========================
+   PATH SETUP (ESM)
+========================== */
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /* ==========================
    CONFIG
@@ -16,36 +25,27 @@ const ships = {};
 let lastRealDataTimestamp = null;
 
 /* ==========================
-   FUNZIONE DI SIMULAZIONE
+   SIMULAZIONE FALLBACK
 ========================== */
 
 function simulateShips() {
   const now = new Date().toISOString();
-  const baseLat = 43.30;
-  const baseLon = 10.50;
 
   ships["SIM-1"] = {
     mmsi: "SIM-1",
-    lat: baseLat + Math.sin(Date.now() / 60000) * 0.05,
-    lon: baseLon + Math.cos(Date.now() / 60000) * 0.05,
-    speed: 14,
+    lat: 43.3 + Math.sin(Date.now() / 60000) * 0.1,
+    lon: 10.5 + Math.cos(Date.now() / 60000) * 0.1,
+    speed: 12,
     heading: (Date.now() / 1000) % 360,
     timestamp: now,
     simulated: true
   };
 }
 
-/* ==========================
-   TIMER FALLBACK
-   (se non arrivano AIS veri)
-========================== */
-
 setInterval(() => {
-  const now = Date.now();
-
   if (
     !lastRealDataTimestamp ||
-    now - lastRealDataTimestamp > 2 * 60 * 1000 // 2 minuti
+    Date.now() - lastRealDataTimestamp > 2 * 60 * 1000
   ) {
     simulateShips();
   }
@@ -64,10 +64,12 @@ const ws = new WebSocket("wss://stream.aisstream.io/v0/stream", {
 ws.on("open", () => {
   console.log("Connected to AISStream");
 
-  ws.send(JSON.stringify({
-    APIKey: AIS_API_KEY,
-    BoundingBoxes: [[[-90, -180], [90, 180]]]
-  }));
+  ws.send(
+    JSON.stringify({
+      APIKey: AIS_API_KEY,
+      BoundingBoxes: [[[-90, -180], [90, 180]]]
+    })
+  );
 });
 
 ws.on("message", (data) => {
@@ -90,29 +92,25 @@ ws.on("message", (data) => {
 
       lastRealDataTimestamp = Date.now();
     }
-  } catch (err) {
-    console.error("Invalid AIS message");
+  } catch {
+    // ignora messaggi non validi
   }
 });
 
-ws.on("error", (err) => {
-  console.error("WebSocket error", err.message);
-});
-
 /* ==========================
-   HTTP SERVER
+   EXPRESS SERVER
 ========================== */
 
 const app = express();
 
+// 🔥 SERVE IL FRONTEND
+app.use(express.static(path.join(__dirname, "public")));
+
+// API
 app.get("/ships", (req, res) => {
   res.json(Object.values(ships));
 });
 
-app.get("/", (req, res) => {
-  res.send("AIS backend running");
-});
-
 app.listen(PORT, () => {
-  console.log("Backend running on port", PORT);
+  console.log("Server running on port", PORT);
 });
