@@ -138,10 +138,28 @@ const shipLayer = L.layerGroup().addTo(map);
 
 const companyColors = {
   "MSC": "#0a84ff",
-  "Costa": "#30d158",
-  "Carnival": "#ff453a",
-  "Royal Caribbean": "#ff9f0a",
-  "Disney": "#bf5af2"
+  "COSTA": "#30d158",
+  "CARNIVAL": "#ff453a",
+  "ROYAL": "#ff9f0a",
+  "DISNEY": "#bf5af2",
+  "AIDA": "#ff6f00",
+  "PRINCESS": "#5b7db1",
+  "HAL": "#0b3d2e",
+  "PO": "#002b5c",
+  "POAUS": "#005aa7",
+  "CUNARD": "#8b0000",
+  "VIKING": "#9e9e9e",
+  "NCL": "#1c8adb",
+  "VIRGIN": "#c8102e",
+  "SILVERSEA": "#b9b9b9",
+  "SEABOURN": "#7a7a7a",
+  "PONANT": "#1f4e79",
+  "TUI": "#d0002d",
+  "AZAMARA": "#6a1b9a",
+  "RITZ": "#c9a23f",
+  "HAPAG": "#0a1a3a",
+  "ADORA": "#e60012",
+  "CMV": "#1565c0"
 };
 
 const defaultColor = "#9fa3a7";
@@ -150,7 +168,7 @@ const defaultColor = "#9fa3a7";
    SHIP ICON (SVG)
 ========================= */
 
-function shipIcon(heading = 0, company = null, simulated = false) {
+function icon: shipIcon(ship.heading, ship.company_code, ship.simulated) {
   const color = simulated
     ? "#ff453a"
     : companyColors[company] || defaultColor;
