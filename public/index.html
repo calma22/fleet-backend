@@ -22,14 +22,14 @@
       background: #000;
     }
 
-    /* rimuove qualsiasi linea / seam */
+    /* RIMUOVE SEAM / GRIGLIA */
     .leaflet-tile {
       border: none !important;
       outline: none !important;
     }
 
     /* =========================
-       LOGO + TAGLINE
+       BRAND
     ========================= */
 
     #brand {
@@ -45,7 +45,6 @@
 
     #brand img {
       height: 64px;
-      width: auto;
       display: block;
       margin: 0 auto;
     }
@@ -82,7 +81,7 @@
 
 <div id="map"></div>
 
-<!-- BRAND -->
+<!-- LOGO -->
 <div id="brand">
   <img src="logo-martec-marine.png" alt="Martec Marine">
   <div class="tagline">WORLDWIDE SAFETY</div>
@@ -112,7 +111,7 @@ map.on("drag", () => {
 });
 
 /* =========================
-   TILE (DARK – NO GRID)
+   TILE DARK (NO GRID)
 ========================= */
 
 L.tileLayer(
@@ -133,27 +132,27 @@ setTimeout(() => map.invalidateSize(), 200);
 const shipLayer = L.layerGroup().addTo(map);
 
 /* =========================
-   COMPANY COLORS
+   SHIP ICON (COLOR FIX)
 ========================= */
 
-const companyColors = {
-  "MSC": "#0a84ff",
-  "Costa": "#30d158",
-  "Carnival": "#ff453a",
-  "Royal Caribbean": "#ff9f0a",
-  "Disney": "#bf5af2"
-};
+function shipIcon(heading = 0, company = "", simulated = false) {
 
-const defaultColor = "#9fa3a7";
+  const name = company ? company.toUpperCase() : "";
+  let color = "#9fa3a7"; // default grigio
 
-/* =========================
-   SHIP ICON (SVG)
-========================= */
-
-function shipIcon(heading = 0, company = null, simulated = false) {
-  const color = simulated
-    ? "#ff453a"
-    : companyColors[company] || defaultColor;
+  if (simulated) {
+    color = "#ff453a";
+  } else if (name.includes("MSC")) {
+    color = "#0a84ff";
+  } else if (name.includes("COSTA")) {
+    color = "#30d158";
+  } else if (name.includes("CARNIVAL")) {
+    color = "#ff453a";
+  } else if (name.includes("ROYAL")) {
+    color = "#ff9f0a";
+  } else if (name.includes("DISNEY")) {
+    color = "#bf5af2";
+  }
 
   return L.divIcon({
     className: "",
