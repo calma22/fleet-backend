@@ -21,17 +21,6 @@
       height: 100%;
     }
 
-    /* ICONE NAVI */
-    .ship-icon {
-      font-size: 18px;
-      transform-origin: center;
-      color: #00ff00; /* LIVE AIS */
-    }
-
-    .ship-icon.simulated {
-      color: red; /* SIMULATED */
-    }
-
     /* STATUS OVERLAY */
     #status {
       position: absolute;
@@ -77,34 +66,52 @@
      MAP INIT
   ========================= */
 
-  const map = L.map("map").setView([20, 0], 2);
+  const map = L.map("map", {
+    worldCopyJump: false
+  }).setView([20, 0], 2);
 
-  // LAYER MAPPA
+  /* =========================
+     BLOCCO MONDO (NO WRAP)
+  ========================= */
+
+  const southWest = L.latLng(-85, -180);
+  const northEast = L.latLng(85, 180);
+  const bounds = L.latLngBounds(southWest, northEast);
+
+  map.setMaxBounds(bounds);
+  map.options.maxBoundsViscosity = 1.0;
+
+  /* =========================
+     TILE LAYERS
+  ========================= */
+
   const lightLayer = L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    { attribution: "© OpenStreetMap" }
+    {
+      attribution: "© OpenStreetMap",
+      noWrap: true
+    }
   );
 
   const darkLayer = L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-    { attribution: "© OpenStreetMap © CartoDB" }
+    {
+      attribution: "© OpenStreetMap © CartoDB",
+      noWrap: true
+    }
   );
 
-  // Tema iniziale
   let currentTheme = "dark";
   darkLayer.addTo(map);
 
   // 🔧 FIX Leaflet post-reload
-  setTimeout(() => {
-    map.invalidateSize();
-  }, 200);
+  setTimeout(() => map.invalidateSize(), 200);
 
   /* =========================
      TOGGLE TEMA
   ========================= */
 
   const themeToggle = document.getElementById("themeToggle");
-
   themeToggle.onclick = () => {
     if (currentTheme === "dark") {
       map.removeLayer(darkLayer);
@@ -120,28 +127,49 @@
   };
 
   /* =========================
-     LAYER GROUP NAVI
+     COLORI COMPAGNIE
+  ========================= */
+
+  const companyColors = {
+    "Carnival Cruise Lines": "#ff3b30",
+    "MSC Crociere": "#007aff",
+    "Costa Crociere": "#34c759",
+    "Royal Caribbean": "#ff9500",
+    "Disney Cruise Line": "#af52de"
+  };
+
+  const defaultColor = "#9e9e9e";
+
+  /* =========================
+     LAYER NAVI
   ========================= */
 
   const shipLayer = L.layerGroup().addTo(map);
 
   /* =========================
-     ICONA NAVE
+     ICONA NAVE (SVG)
   ========================= */
 
-  function shipIcon(heading = 0, simulated = false) {
+  function shipIcon(heading = 0, company = null, simulated = false) {
+    const color = simulated
+      ? "red"
+      : (company && companyColors[company])
+        ? companyColors[company]
+        : defaultColor;
+
     return L.divIcon({
       className: "",
       html: `
-        <div
-          class="ship-icon ${simulated ? "simulated" : ""}"
-          style="transform: rotate(${heading}deg)"
-        >
-          ▲
-        </div>
+        <svg width="24" height="24" viewBox="0 0 24 24"
+             style="transform: rotate(${heading}deg);">
+          <polygon
+            points="12,2 20,22 12,18 4,22"
+            fill="${color}"
+          />
+        </svg>
       `,
-      iconSize: [20, 20],
-      iconAnchor: [10, 10]
+      iconSize: [24, 24],
+      iconAnchor: [12, 12]
     });
   }
 
@@ -172,25 +200,23 @@
         if (Number.isNaN(lat) || Number.isNaN(lon)) return;
 
         L.marker([lat, lon], {
-          icon: shipIcon(ship.heading, ship.simulated)
+          icon: shipIcon(
+            ship.heading,
+            ship.company || null,
+            ship.simulated
+          )
         })
         .addTo(shipLayer)
-        .bindPopup(`
-          <b>${ship.name || "Unknown ship"}</b><br/>
-          MMSI: ${ship.mmsi}<br/>
-          Speed: ${ship.speed ?? "-"} kn<br/>
-          ${ship.simulated ? "SIMULATED" : "LIVE AIS"}
-        `);
+        .bindTooltip(
+          `<b>${ship.name}</b><br/>${ship.company || ""}`,
+          { direction: "top", offset: [0, -10] }
+        );
       });
 
     } catch (err) {
       console.error("Error fetching ships:", err);
     }
   }
-
-  /* =========================
-     START LOOP
-  ========================= */
 
   updateShips();
   setInterval(updateShips, 30000);
