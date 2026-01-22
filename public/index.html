@@ -60,7 +60,7 @@
 
 <script>
 /* =========================
-   MAP INIT (NO GRID, NO WRAP)
+   MAP INIT
 ========================= */
 
 const map = L.map("map", {
@@ -69,15 +69,32 @@ const map = L.map("map", {
   maxBoundsViscosity: 1.0
 }).setView([20, 0], 2);
 
-L.tileLayer(
+/* ===== BASE LAYERS ===== */
+
+const darkLayer = L.tileLayer(
+  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+  { noWrap: true }
+);
+
+const lightLayer = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  { noWrap: true }
+);
+
+darkLayer.addTo(map);
+
+/* ===== DAY / NIGHT SWITCH ===== */
+
+L.control.layers(
   {
-    attribution: "© OpenStreetMap",
-    noWrap: true
-  }
+    "Night": darkLayer,
+    "Day": lightLayer
+  },
+  null,
+  { position: "bottomright" }
 ).addTo(map);
 
-// fix resize kiosk
+// kiosk resize fix
 setTimeout(() => map.invalidateSize(), 200);
 
 /* =========================
@@ -126,15 +143,15 @@ function shipIcon(heading = 0, companyCode = "") {
       <div style="
         width: 0;
         height: 0;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-bottom: 16px solid ${color};
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 14px solid ${color};
         transform: rotate(${heading}deg);
         transform-origin: center;
       "></div>
     `,
-    iconSize: [16, 16],
-    iconAnchor: [8, 8]
+    iconSize: [14, 14],
+    iconAnchor: [7, 7]
   });
 }
 
@@ -168,7 +185,7 @@ async function updateShips() {
       .addTo(shipLayer)
       .bindTooltip(
         `<b>${ship.name}</b><br>${ship.company_name}`,
-        { direction: "top", offset: [0, -10], opacity: 0.9 }
+        { direction: "top", offset: [0, -8], opacity: 0.9 }
       );
     });
 
