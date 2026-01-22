@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <title>SMCS – Live Ship Tracker</title>
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
     html, body {
@@ -19,61 +16,38 @@
     #map {
       width: 100%;
       height: 100%;
-      background: #000;
     }
 
-    /* RIMUOVE SEAM / GRIGLIA */
-    .leaflet-tile {
-      border: none !important;
-      outline: none !important;
-    }
-
-    /* =========================
-       BRAND
-    ========================= */
-
-    #brand {
+    /* LOGO */
+    #logo {
       position: absolute;
       top: 14px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 600;
-      pointer-events: none;
-      text-align: center;
-      opacity: 0.28;
-    }
-
-    #brand img {
-      height: 64px;
-      display: block;
-      margin: 0 auto;
-    }
-
-    #brand .tagline {
-      margin-top: 4px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
-      letter-spacing: 2.5px;
-      color: #cfd6dc;
-    }
-
-    /* =========================
-       STATUS
-    ========================= */
-
-    #status {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-family: sans-serif;
-      font-size: 14px;
       z-index: 1000;
-      display: none;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    #logo img {
+      height: 70px;
+      opacity: 0.9;
+    }
+
+    #logo span {
+      display: block;
+      margin-top: 4px;
+      font-family: sans-serif;
+      letter-spacing: 4px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ICONE NAVI */
+    .ship {
+      font-size: 20px;
+      transform-origin: center;
+      text-shadow: 0 0 6px rgba(0,0,0,0.8);
     }
   </style>
 </head>
@@ -81,130 +55,84 @@
 
 <div id="map"></div>
 
-<!-- LOGO -->
-<div id="brand">
-  <img src="logo-martec-marine.png" alt="Martec Marine">
-  <div class="tagline">WORLDWIDE SAFETY</div>
+<div id="logo">
+  <img src="/logo.png" />
+  <span>WORLDWIDE SAFETY</span>
 </div>
-
-<div id="status">Waiting for live AIS data…</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 /* =========================
-   MAP INIT
+   COLORI PER COMPAGNIA
 ========================= */
 
-const map = L.map("map", {
-  worldCopyJump: false,
-  zoomControl: true,
-  inertia: true
-}).setView([20, 0], 2);
+const COMPANY_COLORS = {
+  "MSC": "#00c8ff",
+  "AIDA": "#ffcc00",
+  "COSTA": "#ff3300",
+  "RCCL": "#6a5acd",
+  "CARNIVAL": "#ff0066",
+  "DISNEY": "#00ffff",
+  "VIKING": "#cccccc"
+};
 
-/* blocco longitudine */
-map.on("drag", () => {
-  const c = map.getCenter();
-  if (c.lng < -180) c.lng = -180;
-  if (c.lng > 180) c.lng = 180;
-  map.panTo(c, { animate: false });
-});
-
-/* =========================
-   TILE DARK (NO GRID)
-========================= */
-
-L.tileLayer(
-  "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
-  {
-    attribution: "© OpenStreetMap © Carto",
-    noWrap: true,
-    detectRetina: true
-  }
-).addTo(map);
-
-setTimeout(() => map.invalidateSize(), 200);
-
-/* =========================
-   SHIP LAYER
-========================= */
-
-const shipLayer = L.layerGroup().addTo(map);
-
-/* =========================
-   SHIP ICON (COLOR FIX)
-========================= */
-
-function shipIcon(heading = 0, company = "", simulated = false) {
-
-  const name = company ? company.toUpperCase() : "";
-  let color = "#9fa3a7"; // default grigio
-
-  if (simulated) {
-    color = "#ff453a";
-  } else if (name.includes("MSC")) {
-    color = "#0a84ff";
-  } else if (name.includes("COSTA")) {
-    color = "#30d158";
-  } else if (name.includes("CARNIVAL")) {
-    color = "#ff453a";
-  } else if (name.includes("ROYAL")) {
-    color = "#ff9f0a";
-  } else if (name.includes("DISNEY")) {
-    color = "#bf5af2";
-  }
+function shipIcon(heading, companyCode) {
+  const color = COMPANY_COLORS[companyCode] || "#999999";
 
   return L.divIcon({
     className: "",
     html: `
-      <svg width="26" height="26" viewBox="0 0 24 24"
-           style="transform: rotate(${heading}deg)">
-        <polygon
-          points="12,2 21,22 12,18 3,22"
-          fill="${color}"
-        />
-      </svg>
+      <div class="ship" style="color:${color}; transform: rotate(${heading}deg)">
+        ▲
+      </div>
     `,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13]
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
   });
 }
 
 /* =========================
-   UPDATE SHIPS
+   MAPPA (SENZA GRIGLIA)
+========================= */
+
+const map = L.map("map", {
+  worldCopyJump: false,
+  continuousWorld: false,
+  maxBounds: [[-85, -180], [85, 180]],
+  maxBoundsViscosity: 1.0
+}).setView([20, 0], 2);
+
+L.tileLayer(
+  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+  { attribution: "" }
+).addTo(map);
+
+const shipLayer = L.layerGroup().addTo(map);
+
+/* =========================
+   UPDATE NAVI
 ========================= */
 
 async function updateShips() {
-  try {
-    const res = await fetch("/ships", { cache: "no-store" });
-    const ships = await res.json();
-    const status = document.getElementById("status");
+  const res = await fetch("/ships", { cache: "no-store" });
+  const ships = await res.json();
 
-    shipLayer.clearLayers();
+  shipLayer.clearLayers();
 
-    if (!ships || ships.length === 0) {
-      status.style.display = "block";
-      return;
-    } else {
-      status.style.display = "none";
-    }
+  ships.forEach(ship => {
+    if (!ship.lat || !ship.lon) return;
 
-    ships.forEach(ship => {
-      if (ship.lat == null || ship.lon == null) return;
-
-      L.marker([ship.lat, ship.lon], {
-        icon: shipIcon(ship.heading, ship.company, ship.simulated)
-      })
-      .addTo(shipLayer)
-      .bindTooltip(
-        `<b>${ship.name}</b><br>${ship.company || ""}`,
-        { direction: "top", offset: [0, -10] }
-      );
-    });
-
-  } catch (err) {
-    console.error("Error fetching ships:", err);
-  }
+    L.marker([ship.lat, ship.lon], {
+      icon: shipIcon(ship.heading || 0, ship.company_code)
+    })
+    .addTo(shipLayer)
+    .bindPopup(`
+      <b>${ship.name || "Unknown"}</b><br>
+      ${ship.company_name || ""}<br>
+      MMSI: ${ship.mmsi}
+    `);
+  });
 }
 
 updateShips();
