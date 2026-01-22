@@ -141,7 +141,10 @@ L.control.layers(
     "Day": lightLayer
   },
   null,
-  { position: "bottomright" }
+  {
+    position: "topright",
+    collapsed: true
+  }
 ).addTo(map);
 
 setTimeout(() => map.invalidateSize(), 200);
@@ -189,7 +192,7 @@ const defaultColor = "#9fa3a7";
 ========================= */
 
 function shipIcon(heading = 0, companyCode = null) {
-  const color = companyColors[companyCode] || defaultColor;
+  const color = companyColors[(companyCode || "").toUpperCase()] || defaultColor;
 
   return L.divIcon({
     className: "",
