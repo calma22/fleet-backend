@@ -21,6 +21,23 @@
       height: 100%;
     }
 
+    /* SCRITTA BRAND CENTRATA IN ALTO */
+    #centerLabel {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 26px;
+      letter-spacing: 6px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.18);
+      pointer-events: none;
+      user-select: none;
+      z-index: 500;
+      white-space: nowrap;
+    }
+
     /* STATUS OVERLAY */
     #status {
       position: absolute;
@@ -56,6 +73,7 @@
 <body>
 
 <div id="map"></div>
+<div id="centerLabel">SMCS WORLDWIDE SAFETY</div>
 <div id="status">Waiting for live AIS data…</div>
 <div id="themeToggle">🌙</div>
 
