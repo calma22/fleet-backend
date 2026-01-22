@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>Live Ship Tracker</title>
+  <title>SMCS – Live Ship Tracker</title>
 
   <link
     rel="stylesheet"
@@ -21,7 +21,7 @@
       height: 100%;
     }
 
-    /* SCRITTA BRAND CENTRATA IN ALTO */
+    /* BRAND TEXT */
     #centerLabel {
       position: absolute;
       top: 18px;
@@ -38,7 +38,7 @@
       white-space: nowrap;
     }
 
-    /* STATUS OVERLAY */
+    /* STATUS */
     #status {
       position: absolute;
       bottom: 20px;
@@ -54,7 +54,7 @@
       display: none;
     }
 
-    /* TOGGLE TEMA */
+    /* THEME TOGGLE */
     #themeToggle {
       position: absolute;
       top: 15px;
@@ -80,199 +80,199 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-  /* =========================
-     MAP INIT
-  ========================= */
+/* =========================
+   MAP INIT
+========================= */
 
-  const map = L.map("map", {
-    worldCopyJump: false
-  }).setView([20, 0], 2);
+const map = L.map("map", {
+  worldCopyJump: false
+}).setView([20, 0], 2);
 
-  /* =========================
-     BLOCCO MONDO
-  ========================= */
+/* =========================
+   BLOCK WORLD WRAP
+========================= */
 
-  const bounds = L.latLngBounds(
-    L.latLng(-85, -180),
-    L.latLng(85, 180)
-  );
-  map.setMaxBounds(bounds);
-  map.options.maxBoundsViscosity = 1.0;
+const bounds = L.latLngBounds(
+  L.latLng(-85, -180),
+  L.latLng(85, 180)
+);
+map.setMaxBounds(bounds);
+map.options.maxBoundsViscosity = 1.0;
 
-  /* =========================
-     TILE LAYERS
-  ========================= */
+/* =========================
+   TILE LAYERS
+========================= */
 
-  const lightLayer = L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      attribution: "© OpenStreetMap",
-      noWrap: true
+const lightLayer = L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    attribution: "© OpenStreetMap",
+    noWrap: true
+  }
+);
+
+/* 🔥 DARK – NO GRID, NO LABELS */
+const darkLayer = L.tileLayer(
+  "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+  {
+    attribution: "© OpenMapTiles © OpenStreetMap contributors",
+    noWrap: true
+  }
+);
+
+let currentTheme = "dark";
+darkLayer.addTo(map);
+
+// Leaflet resize fix
+setTimeout(() => map.invalidateSize(), 200);
+
+/* =========================
+   THEME TOGGLE
+========================= */
+
+const themeToggle = document.getElementById("themeToggle");
+themeToggle.onclick = () => {
+  if (currentTheme === "dark") {
+    map.removeLayer(darkLayer);
+    lightLayer.addTo(map);
+    currentTheme = "light";
+    themeToggle.textContent = "☀️";
+  } else {
+    map.removeLayer(lightLayer);
+    darkLayer.addTo(map);
+    currentTheme = "dark";
+    themeToggle.textContent = "🌙";
+  }
+};
+
+/* =========================
+   COMPANY COLORS + ALIASES
+========================= */
+
+const companyColors = {
+  "Carnival": "#ff3b30",
+  "MSC": "#007aff",
+  "Costa": "#34c759",
+  "Royal Caribbean": "#ff9500",
+  "Disney": "#af52de"
+};
+
+const companyAliases = {
+  "Carnival": [
+    "Carnival Cruise Lines",
+    "Carnival Cruise Line",
+    "Carnival Corporation"
+  ],
+  "MSC": [
+    "MSC Crociere",
+    "MSC Cruises"
+  ],
+  "Costa": [
+    "Costa Crociere",
+    "Costa Cruises"
+  ],
+  "Royal Caribbean": [
+    "Royal Caribbean",
+    "Royal Caribbean Cruises Ltd"
+  ],
+  "Disney": [
+    "Disney Cruise Line"
+  ]
+};
+
+const defaultColor = "#9e9e9e";
+
+function normalizeCompany(company) {
+  if (!company) return null;
+  for (const key in companyAliases) {
+    if (companyAliases[key].includes(company)) {
+      return key;
     }
-  );
+  }
+  return null;
+}
 
-  /* 👉 DARK SENZA GRIGLIA */
-  const darkLayer = L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png",
-    {
-      attribution: "© OpenStreetMap © CartoDB",
-      noWrap: true
-    }
-  );
+/* =========================
+   SHIP LAYER
+========================= */
 
-  let currentTheme = "dark";
-  darkLayer.addTo(map);
+const shipLayer = L.layerGroup().addTo(map);
 
-  setTimeout(() => map.invalidateSize(), 200);
+/* =========================
+   SHIP ICON (SVG)
+========================= */
 
-  /* =========================
-     TOGGLE TEMA
-  ========================= */
+function shipIcon(heading = 0, company = null, simulated = false) {
+  const normalized = normalizeCompany(company);
+  const color = simulated
+    ? "red"
+    : normalized
+      ? companyColors[normalized]
+      : defaultColor;
 
-  const themeToggle = document.getElementById("themeToggle");
-  themeToggle.onclick = () => {
-    if (currentTheme === "dark") {
-      map.removeLayer(darkLayer);
-      lightLayer.addTo(map);
-      currentTheme = "light";
-      themeToggle.textContent = "☀️";
+  return L.divIcon({
+    className: "",
+    html: `
+      <svg width="24" height="24" viewBox="0 0 24 24"
+           style="transform: rotate(${heading}deg);">
+        <polygon
+          points="12,2 20,22 12,18 4,22"
+          fill="${color}"
+        />
+      </svg>
+    `,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  });
+}
+
+/* =========================
+   UPDATE SHIPS
+========================= */
+
+async function updateShips() {
+  try {
+    const res = await fetch("/ships", { cache: "no-store" });
+    const ships = await res.json();
+    const status = document.getElementById("status");
+
+    shipLayer.clearLayers();
+
+    if (!ships || ships.length === 0) {
+      status.style.display = "block";
+      return;
     } else {
-      map.removeLayer(lightLayer);
-      darkLayer.addTo(map);
-      currentTheme = "dark";
-      themeToggle.textContent = "🌙";
+      status.style.display = "none";
     }
-  };
 
-  /* =========================
-     NORMALIZZAZIONE COMPAGNIE
-  ========================= */
+    ships.forEach(ship => {
+      if (ship.lat == null || ship.lon == null) return;
 
-  const companyColors = {
-    "Carnival": "#ff3b30",
-    "MSC": "#007aff",
-    "Costa": "#34c759",
-    "Royal Caribbean": "#ff9500",
-    "Disney": "#af52de"
-  };
+      const lat = Number(ship.lat);
+      const lon = Number(ship.lon);
+      if (Number.isNaN(lat) || Number.isNaN(lon)) return;
 
-  const companyAliases = {
-    "Carnival": [
-      "Carnival Cruise Lines",
-      "Carnival Cruise Line",
-      "Carnival Corporation"
-    ],
-    "MSC": [
-      "MSC Crociere",
-      "MSC Cruises"
-    ],
-    "Costa": [
-      "Costa Crociere",
-      "Costa Cruises"
-    ],
-    "Royal Caribbean": [
-      "Royal Caribbean",
-      "Royal Caribbean Cruises Ltd"
-    ],
-    "Disney": [
-      "Disney Cruise Line"
-    ]
-  };
-
-  const defaultColor = "#9e9e9e";
-
-  function normalizeCompany(company) {
-    if (!company) return null;
-
-    for (const key in companyAliases) {
-      if (companyAliases[key].includes(company)) {
-        return key;
-      }
-    }
-    return null;
-  }
-
-  /* =========================
-     LAYER NAVI
-  ========================= */
-
-  const shipLayer = L.layerGroup().addTo(map);
-
-  /* =========================
-     ICONA NAVE
-  ========================= */
-
-  function shipIcon(heading = 0, company = null, simulated = false) {
-    const normalized = normalizeCompany(company);
-    const color = simulated
-      ? "red"
-      : normalized
-        ? companyColors[normalized]
-        : defaultColor;
-
-    return L.divIcon({
-      className: "",
-      html: `
-        <svg width="24" height="24" viewBox="0 0 24 24"
-             style="transform: rotate(${heading}deg);">
-          <polygon
-            points="12,2 20,22 12,18 4,22"
-            fill="${color}"
-          />
-        </svg>
-      `,
-      iconSize: [24, 24],
-      iconAnchor: [12, 12]
+      L.marker([lat, lon], {
+        icon: shipIcon(
+          ship.heading,
+          ship.company || null,
+          ship.simulated
+        )
+      })
+      .addTo(shipLayer)
+      .bindTooltip(
+        `<b>${ship.name}</b><br/>${ship.company || ""}`,
+        { direction: "top", offset: [0, -10] }
+      );
     });
+
+  } catch (err) {
+    console.error("Error fetching ships:", err);
   }
+}
 
-  /* =========================
-     UPDATE NAVI
-  ========================= */
-
-  async function updateShips() {
-    try {
-      const res = await fetch("/ships", { cache: "no-store" });
-      const ships = await res.json();
-      const status = document.getElementById("status");
-
-      shipLayer.clearLayers();
-
-      if (!ships || ships.length === 0) {
-        status.style.display = "block";
-        return;
-      } else {
-        status.style.display = "none";
-      }
-
-      ships.forEach(ship => {
-        if (ship.lat == null || ship.lon == null) return;
-
-        const lat = Number(ship.lat);
-        const lon = Number(ship.lon);
-        if (Number.isNaN(lat) || Number.isNaN(lon)) return;
-
-        L.marker([lat, lon], {
-          icon: shipIcon(
-            ship.heading,
-            ship.company || null,
-            ship.simulated
-          )
-        })
-        .addTo(shipLayer)
-        .bindTooltip(
-          `<b>${ship.name}</b><br/>${ship.company || ""}`,
-          { direction: "top", offset: [0, -10] }
-        );
-      });
-
-    } catch (err) {
-      console.error("Error fetching ships:", err);
-    }
-  }
-
-  updateShips();
-  setInterval(updateShips, 30000);
+updateShips();
+setInterval(updateShips, 30000);
 </script>
 
 </body>
