@@ -1,0 +1,58 @@
+{
+  "fleet": [
+    { "mmsi": "308017000", "name": "Carnival Sunshine", "company_code": "CARNIVAL", "company_name": "Carnival Cruise Lines" },
+    { "mmsi": "308045000", "name": "Carnival Sunrise", "company_code": "CARNIVAL", "company_name": "Carnival Cruise Lines" },
+    { "mmsi": "308516000", "name": "Disney Magic", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "308457000", "name": "Disney Wonder", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+
+    { "mmsi": "247094800", "name": "Costa Fortuna", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247113300", "name": "Costa Magica", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247187600", "name": "Costa Serena", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247258100", "name": "Costa Pacifica", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247282900", "name": "Costa Deliziosa", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247311100", "name": "Costa Favolosa", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247313500", "name": "Costa Fascinosa", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247353700", "name": "Costa Diadema", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "352003546", "name": "Costa Firenze", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247391900", "name": "Costa Smeralda", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247431200", "name": "Costa Toscana", "company_code": "COSTA", "company_name": "Costa Crociere" },
+
+    { "mmsi": "248392000", "name": "MSC Seaside", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248717000", "name": "MSC Seaview", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "215920000", "name": "MSC Seashore", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "256059000", "name": "MSC Seascape", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248425000", "name": "MSC Euribia", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248455000", "name": "MSC World Europa", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248472000", "name": "MSC World America", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248239000", "name": "MSC Meraviglia", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "249033000", "name": "MSC Bellissima", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "249339000", "name": "MSC Grandiosa", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "235123168", "name": "MSC Virtuosa", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "372483000", "name": "MSC Divina", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "373188000", "name": "MSC Preziosa", "company_code": "MSC", "company_name": "MSC Crociere" },
+
+    { "mmsi": "247353800", "name": "AIDAprima", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247385300", "name": "AIDAperla", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247187700", "name": "AIDAdiva", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247255400", "name": "AIDAluna", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247229700", "name": "AIDAbella", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247282500", "name": "AIDAblu", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247302900", "name": "AIDAsol", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247312900", "name": "AIDAmar", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247322800", "name": "AIDAstella", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247389200", "name": "AIDAnova", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247435300", "name": "Aida Cosma", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+
+    { "mmsi": "311042900", "name": "Disney Dream", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "311058700", "name": "Disney Fantasy", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "311001098", "name": "Disney Wish", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "311001221", "name": "Disney Treasure", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+
+    { "mmsi": "311001140", "name": "Icon of the Seas", "company_code": "ROYAL", "company_name": "Royal Caribbean" },
+    { "mmsi": "311001551", "name": "Star of the Seas", "company_code": "ROYAL", "company_name": "Royal Caribbean" },
+
+    { "mmsi": "311000002", "name": "Queen Mary 2", "company_code": "CUNARD", "company_name": "Cunard Line" },
+    { "mmsi": "311019600", "name": "Queen Elizabeth", "company_code": "CUNARD", "company_name": "Cunard Line" },
+    { "mmsi": "311001229", "name": "Queen Anne", "company_code": "CUNARD", "company_name": "Cunard Line" }
+  ]
+}
