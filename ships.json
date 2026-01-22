@@ -1,799 +1,171 @@
 {
   "fleet": [
-    {
-      "mmsi": "308017000",
-      "name": "Carnival Sunshine",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "308045000",
-      "name": "Carnival Sunrise",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "308516000",
-      "name": "Disney Magic",
-      "company": "Disney Cruise Line"
-    },
-    {
-      "mmsi": "308457000",
-      "name": "Disney Wonder",
-      "company": "Disney Cruise Line"
-    },
-    {
-      "mmsi": "355263000",
-      "name": "Radiance Carnival",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "357657000",
-      "name": "Carnival Conquest",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "357661000",
-      "name": "Carnival Glory",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "357717000",
-      "name": "Carnival Valor",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "247094800",
-      "name": "Costa Fortuna",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "247113300",
-      "name": "Costa Magica",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "357731000",
-      "name": "Carnival Liberty",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "357797000",
-      "name": "Carnival Freedom",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "247187600",
-      "name": "Costa Serena",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "311005900",
-      "name": "Carnival Splendor",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "247258100",
-      "name": "Costa Pacifica",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "311019600",
-      "name": "Carnival Dream",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "311001201",
-      "name": "Carnival Luminosa (Ex Costa Luminosa)",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "247282900",
-      "name": "Costa Deliziosa",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "311036300",
-      "name": "Carnival Magic",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "247311100",
-      "name": "Costa Favolosa",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "247313500",
-      "name": "Costa Fascinosa",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "311054300",
-      "name": "Carnival Breeze",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "247353700",
-      "name": "Costa Diadema",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "311000624",
-      "name": "Carnival Vista",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "311000741",
-      "name": "Carnival Horizon",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "248392000",
-      "name": "MSC Seaside",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "248717000",
-      "name": "MSC Seaview",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "247458100",
-      "name": "Carnival Venezia (Ex Costa Venezia)",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "311000869",
-      "name": "Carnival Panorama",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "352003546",
-      "name": "Costa Firenze",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "215920000",
-      "name": "MSC Seashore",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "256059000",
-      "name": "MSC Seascape",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "248883000",
-      "name": "MSC Explora",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "248967000",
-      "name": "Explora 2",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "248425000",
-      "name": "MSC Euribia",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "248455000",
-      "name": "MSC World Europa",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "248472000",
-      "name": "MSC World America",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "248239000",
-      "name": "MSC Meraviglia",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "249033000",
-      "name": "MSC Bellissima",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "249339000",
-      "name": "MSC Grandiosa",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "235123168",
-      "name": "MSC Virtuosa",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "247353800",
-      "name": "AIDAprima",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247385300",
-      "name": "AIDAperla",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247391900",
-      "name": "Costa Smeralda",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "247431200",
-      "name": "Costa Toscana",
-      "company": "Costa Crociere"
-    },
-    {
-      "mmsi": "311000958",
-      "name": "Mardi Gras",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "311001099",
-      "name": "Carnival Celebration",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "311042900",
-      "name": "Disney Dream",
-      "company": "Disney Cruise Line"
-    },
-    {
-      "mmsi": "311058700",
-      "name": "Disney Fantasy",
-      "company": "Disney Cruise Line"
-    },
-    {
-      "mmsi": "247187700",
-      "name": "AIDAdiva",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247255400",
-      "name": "AIDAluna",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247229700",
-      "name": "AIDAbella",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247282500",
-      "name": "AIDAblu",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247302900",
-      "name": "AIDAsol",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247312900",
-      "name": "AIDAmar",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247322800",
-      "name": "AIDAstella",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "247389200",
-      "name": "AIDAnova",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "311001098",
-      "name": "Disney Wish",
-      "company": "Disney Cruise Line"
-    },
-    {
-      "mmsi": "311001540",
-      "name": "Disney Destiny",
-      "company": "Disney Cruise Line"
-    },
-    {
-      "mmsi": "247435300",
-      "name": "Aida Cosma",
-      "company": "Aida Cruises"
-    },
-    {
-      "mmsi": "311001211",
-      "name": "Carnival Jubilee",
-      "company": "Carnival Cruise Lines"
-    },
-    {
-      "mmsi": "311001221",
-      "name": "Disney Treasure",
-      "company": "Disney Cruise Line"
-    },
-    {
-      "mmsi": "372483000",
-      "name": "MSC Divina",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "373188000",
-      "name": "MSC Preziosa",
-      "company": "MSC Crociere"
-    },
-    {
-      "mmsi": "503000109",
-      "name": "Pacific Explorer (ex Dawn Princess)",
-      "company": "P&O Cruises Australia"
-    },
-    {
-      "mmsi": "310530000",
-      "name": "Grand Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "309386000",
-      "name": "Volendam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "309029000",
-      "name": "Zaandam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "310473000",
-      "name": "Queen of the Oceans (Ex Oceana, Ex Ocean Princess)",
-      "company": "P&O Cruises"
-    },
-    {
-      "mmsi": "503000139",
-      "name": "Pacific Adventure (ex Golden Princess)",
-      "company": "P&O Cruises Australia"
-    },
-    {
-      "mmsi": "503000138",
-      "name": "Pacific Encounter (ex Star Princess)",
-      "company": "P&O Cruises Australia"
-    },
-    {
-      "mmsi": "311000934",
-      "name": "Bolette (ex HAL - Amsterdam)",
-      "company": "Fred. Olsen Cruise Lines"
-    },
-    {
-      "mmsi": "310534000",
-      "name": "Caribbean Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "309033000",
-      "name": "Zuiderdam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "309035000",
-      "name": "Oosterdam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "309039000",
-      "name": "Westerdam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "310547000",
-      "name": "Arcadia",
-      "company": "P&O Cruises"
-    },
-    {
-      "mmsi": "309051000",
-      "name": "Noordam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "310536000",
-      "name": "Crown Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "310587000",
-      "name": "Queen Victoria",
-      "company": "Cunard"
-    },
-    {
-      "mmsi": "310538000",
-      "name": "Emerald Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "310567000",
-      "name": "Ventura",
-      "company": "P&O Cruises"
-    },
-    {
-      "mmsi": "309071000",
-      "name": "Eurodam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "310593000",
-      "name": "Ruby Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "310619000",
-      "name": "Azura",
-      "company": "P&O Cruises"
-    },
-    {
-      "mmsi": "309117000",
-      "name": "Silver Spirit",
-      "company": "Silversea Cruises"
-    },
-    {
-      "mmsi": "309139000",
-      "name": "Nieuw Amsterdam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "311019600",
-      "name": "Queen Elizabeth",
-      "company": "Cunard"
-    },
-    {
-      "mmsi": "229983000",
-      "name": "Le Boreal",
-      "company": "Compagnie du Ponant"
-    },
-    {
-      "mmsi": "229995000",
-      "name": "L'Austral",
-      "company": "Compagnie du Ponant"
-    },
-    {
-      "mmsi": "311050100",
-      "name": "Royal Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "311000281",
-      "name": "Regal Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "311000654",
-      "name": "Silver Muse",
-      "company": "Silversea Cruises"
-    },
-    {
-      "mmsi": "229999000",
-      "name": "Le Soleal",
-      "company": "Compagnie du Ponant"
-    },
-    {
-      "mmsi": "249682000",
-      "name": "Le Lyrial",
-      "company": "Compagnie du Ponant"
-    },
-    {
-      "mmsi": "311000346",
-      "name": "Britannia",
-      "company": "P&O Cruises"
-    },
-    {
-      "mmsi": "311000655",
-      "name": "Majestic Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "257041710",
-      "name": "Viking Star",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "257058690",
-      "name": "Viking Sky",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "309095000",
-      "name": "Koningsdam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "309099000",
-      "name": "Nieuw Statendam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "257058680",
-      "name": "Viking Sea",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "413535000",
-      "name": "Viking Zhao Shang Yi Dun",
-      "company": "China Merchants Viking Cruises"
-    },
-    {
-      "mmsi": "311000574",
-      "name": "Seabourn Encore",
-      "company": "Seabourn Cruise Line"
-    },
-    {
-      "mmsi": "257085730",
-      "name": "Viking Orion",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "257085740",
-      "name": "Viking Jupiter",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "311000673",
-      "name": "Seabourn Ovation",
-      "company": "Seabourn Cruise Line"
-    },
-    {
-      "mmsi": "311000826",
-      "name": "Sky Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "311001229",
-      "name": "Queen Anne",
-      "company": "Cunard"
-    },
-    {
-      "mmsi": "311000858",
-      "name": "Enchanted Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "244120309",
-      "name": "Rotterdam",
-      "company": "Holland America Line"
-    },
-    {
-      "mmsi": "311000754",
-      "name": "Silver Moon",
-      "company": "Silversea Cruises"
-    },
-    {
-      "mmsi": "311000958",
-      "name": "Silver Dawn",
-      "company": "Silversea Cruises"
-    },
-    {
-      "mmsi": "257128500",
-      "name": "Viking Venus",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "257134300",
-      "name": "Viking Mars",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "257138300",
-      "name": "Viking Neptune",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "257142500",
-      "name": "Viking Saturn",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "311000732",
-      "name": "Scarlet Lady",
-      "company": "Virgin Cruise"
-    },
-    {
-      "mmsi": "311000908",
-      "name": "Valiant Lady",
-      "company": "Virgin Cruise"
-    },
-    {
-      "mmsi": "311000910",
-      "name": "Resilient Lady",
-      "company": "Virgin Cruise"
-    },
-    {
-      "mmsi": "311000859",
-      "name": "Discovery Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "257099000",
-      "name": "Norwegian Prima",
-      "company": "Norwegian Cruise Line"
-    },
-    {
-      "mmsi": "311001127",
-      "name": "Norvegian Viva",
-      "company": "Norwegian Cruise Line"
-    },
-    {
-      "mmsi": "257173000",
-      "name": "Norwegian Aqua",
-      "company": "Norwegian Cruise Line"
-    },
-    {
-      "mmsi": "311000912",
-      "name": "Brilliant Lady",
-      "company": "Virgin Cruise"
-    },
-    {
-      "mmsi": "257132100",
-      "name": "Oceania Vista",
-      "company": "Norwegian Cruise Line"
-    },
-    {
-      "mmsi": "310841000",
-      "name": "Sun Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "310869000",
-      "name": "Sphera II",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "257152900",
-      "name": "Viking Vela",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "311000782",
-      "name": "Azamara Pursuit",
-      "company": "Azamara Club Cruise"
-    },
-    {
-      "mmsi": "311000778",
-      "name": "Azamara Onward (Ex Pacific Princess)",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "310527000",
-      "name": "Coral Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "257147700",
-      "name": "Ritz Carlton Ilma",
-      "company": "Ritz-Carlton"
-    },
-    {
-      "mmsi": "310529000",
-      "name": "Island Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "311000002",
-      "name": "Queen Mary 2",
-      "company": "Cunard"
-    },
-    {
-      "mmsi": "311000171",
-      "name": "Seabourn Sojourn",
-      "company": "Seabourn Cruise Line"
-    },
-    {
-      "mmsi": "311000305",
-      "name": "Seabourn Quest",
-      "company": "Seabourn Cruise Line"
-    },
-    {
-      "mmsi": "311000856",
-      "name": "Seabourn Venture",
-      "company": "Seabourn Cruise Line"
-    },
-    {
-      "mmsi": "311000977",
-      "name": "Seabourn Pursuit",
-      "company": "Seabourn Cruise Line"
-    },
-    {
-      "mmsi": "311000570",
-      "name": "Mein Schiff Herz (ex Mein Schiff II)",
-      "company": "TUI Cruises"
-    },
-    {
-      "mmsi": "310562000",
-      "name": "Sapphire Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "310561000",
-      "name": "Diamond Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "311001140",
-      "name": "Icon of the Seas",
-      "company": "Royal Caribbean"
-    },
-    {
-      "mmsi": "311001551",
-      "name": "Star of the Seas",
-      "company": "Royal Caribbean"
-    },
-    {
-      "mmsi": "311001004",
-      "name": "Silver Endeavor",
-      "company": "Silversea Cruises"
-    },
-    {
-      "mmsi": "257122100",
-      "name": "Viking Octantis",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "257122200",
-      "name": "Viking Polaris",
-      "company": "Viking Cruises"
-    },
-    {
-      "mmsi": "538003578",
-      "name": "Ocean Princess",
-      "company": "Princess Cruises"
-    },
-    {
-      "mmsi": "234890000",
-      "name": "Pacific Jewel",
-      "company": "P&O Cruises Australia"
-    },
-    {
-      "mmsi": "538009202",
-      "name": "Pacific Pearl",
-      "company": "P&O Cruises Australia"
-    },
-    {
-      "mmsi": "367117390",
-      "name": "Pacific Sun",
-      "company": "P&O Cruises Australia"
-    },
-    {
-      "mmsi": "311000133",
-      "name": "Pacific World (ex Sun Princess)",
-      "company": "Peace Boat"
-    },
-    {
-      "mmsi": "310566000",
-      "name": "Aurora",
-      "company": "P&O Cruises"
-    },
-    {
-      "mmsi": "311000827",
-      "name": "Iona",
-      "company": "P&O Cruises"
-    },
-    {
-      "mmsi": "311001099",
-      "name": "ARVIA",
-      "company": "P&O Cruises"
-    },
-    {
-      "mmsi": "311001050",
-      "name": "Silver Nova",
-      "company": "Silversea Cruises"
-    },
-    {
-      "mmsi": "311001154",
-      "name": "Silver Ray",
-      "company": "Silversea Cruises"
-    },
-    {
-      "mmsi": "229955000",
-      "name": "Europa 2",
-      "company": "Hapag-Lloyd Cruises"
-    },
-    {
-      "mmsi": "412080000",
-      "name": "Adora Magic City",
-      "company": "Adora Cruises"
-    }
+    { "mmsi": "308017000", "name": "Carnival Sunshine", "company_code": "CARNIVAL", "company_name": "Carnival Cruise Lines" },
+    { "mmsi": "308045000", "name": "Carnival Sunrise", "company_code": "CARNIVAL", "company_name": "Carnival Cruise Lines" },
+    { "mmsi": "308516000", "name": "Disney Magic", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "308457000", "name": "Disney Wonder", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "355263000", "name": "Carnival Radiance", "company_code": "CARNIVAL", "company_name": "Carnival Cruise Lines" },
+    { "mmsi": "357657000", "name": "Carnival Conquest", "company_code": "CARNIVAL", "company_name": "Carnival Cruise Lines" },
+    { "mmsi": "357661000", "name": "Carnival Glory", "company_code": "CARNIVAL", "company_name": "Carnival Cruise Lines" },
+    { "mmsi": "357717000", "name": "Carnival Valor", "company_code": "CARNIVAL", "company_name": "Carnival Cruise Lines" },
+
+    { "mmsi": "247094800", "name": "Costa Fortuna", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247113300", "name": "Costa Magica", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247187600", "name": "Costa Serena", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247258100", "name": "Costa Pacifica", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247282900", "name": "Costa Deliziosa", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247311100", "name": "Costa Favolosa", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247313500", "name": "Costa Fascinosa", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247353700", "name": "Costa Diadema", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247391900", "name": "Costa Smeralda", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "247431200", "name": "Costa Toscana", "company_code": "COSTA", "company_name": "Costa Crociere" },
+    { "mmsi": "352003546", "name": "Costa Firenze", "company_code": "COSTA", "company_name": "Costa Crociere" },
+
+    { "mmsi": "248392000", "name": "MSC Seaside", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248717000", "name": "MSC Seaview", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "215920000", "name": "MSC Seashore", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "256059000", "name": "MSC Seascape", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248425000", "name": "MSC Euribia", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248455000", "name": "MSC World Europa", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248472000", "name": "MSC World America", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "248239000", "name": "MSC Meraviglia", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "249033000", "name": "MSC Bellissima", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "249339000", "name": "MSC Grandiosa", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "235123168", "name": "MSC Virtuosa", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "372483000", "name": "MSC Divina", "company_code": "MSC", "company_name": "MSC Crociere" },
+    { "mmsi": "373188000", "name": "MSC Preziosa", "company_code": "MSC", "company_name": "MSC Crociere" },
+
+    { "mmsi": "247353800", "name": "AIDAprima", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247385300", "name": "AIDAperla", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247187700", "name": "AIDAdiva", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247255400", "name": "AIDAluna", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247229700", "name": "AIDAbella", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247282500", "name": "AIDAblu", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247302900", "name": "AIDAsol", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247312900", "name": "AIDAmar", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247322800", "name": "AIDAstella", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247389200", "name": "AIDAnova", "company_code": "AIDA", "company_name": "AIDA Cruises" },
+    { "mmsi": "247435300", "name": "Aida Cosma", "company_code": "AIDA", "company_name": "AIDA Cruises" }
+
+    ,
+    { "mmsi": "311042900", "name": "Disney Dream", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "311058700", "name": "Disney Fantasy", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "311001098", "name": "Disney Wish", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "311001221", "name": "Disney Treasure", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "311001540", "name": "Disney Destiny", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+
+    { "mmsi": "503000109", "name": "Pacific Explorer (ex Dawn Princess)", "company_code": "POAUS", "company_name": "P&O Cruises Australia" },
+    { "mmsi": "503000139", "name": "Pacific Adventure (ex Golden Princess)", "company_code": "POAUS", "company_name": "P&O Cruises Australia" },
+    { "mmsi": "503000138", "name": "Pacific Encounter (ex Star Princess)", "company_code": "POAUS", "company_name": "P&O Cruises Australia" },
+    { "mmsi": "234890000", "name": "Pacific Jewel", "company_code": "POAUS", "company_name": "P&O Cruises Australia" },
+    { "mmsi": "538009202", "name": "Pacific Pearl", "company_code": "POAUS", "company_name": "P&O Cruises Australia" },
+    { "mmsi": "367117390", "name": "Pacific Sun", "company_code": "POAUS", "company_name": "P&O Cruises Australia" },
+
+    { "mmsi": "310473000", "name": "Queen of the Oceans (Ex Oceana, Ex Ocean Princess)", "company_code": "PO", "company_name": "P&O Cruises" },
+    { "mmsi": "310547000", "name": "Arcadia", "company_code": "PO", "company_name": "P&O Cruises" },
+    { "mmsi": "310567000", "name": "Ventura", "company_code": "PO", "company_name": "P&O Cruises" },
+    { "mmsi": "310619000", "name": "Azura", "company_code": "PO", "company_name": "P&O Cruises" },
+    { "mmsi": "310566000", "name": "Aurora", "company_code": "PO", "company_name": "P&O Cruises" },
+    { "mmsi": "311000346", "name": "Britannia", "company_code": "PO", "company_name": "P&O Cruises" },
+    { "mmsi": "311000827", "name": "Iona", "company_code": "PO", "company_name": "P&O Cruises" },
+    { "mmsi": "311001099", "name": "Arvia", "company_code": "PO", "company_name": "P&O Cruises" },
+
+    { "mmsi": "309386000", "name": "Volendam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "309029000", "name": "Zaandam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "309033000", "name": "Zuiderdam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "309035000", "name": "Oosterdam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "309039000", "name": "Westerdam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "309051000", "name": "Noordam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "309071000", "name": "Eurodam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "309095000", "name": "Koningsdam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "309099000", "name": "Nieuw Statendam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "244120309", "name": "Rotterdam", "company_code": "HAL", "company_name": "Holland America Line" },
+
+    { "mmsi": "310530000", "name": "Grand Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310534000", "name": "Caribbean Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310536000", "name": "Crown Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310538000", "name": "Emerald Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310593000", "name": "Ruby Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310562000", "name": "Sapphire Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310561000", "name": "Diamond Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "311050100", "name": "Royal Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "311000281", "name": "Regal Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "311000655", "name": "Majestic Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "311000826", "name": "Sky Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "311000858", "name": "Enchanted Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "311000859", "name": "Discovery Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310841000", "name": "Sun Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310869000", "name": "Sphera II", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310527000", "name": "Coral Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "310529000", "name": "Island Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" },
+    { "mmsi": "538003578", "name": "Ocean Princess", "company_code": "PRINCESS", "company_name": "Princess Cruises" }
+    
+    ,
+    { "mmsi": "310587000", "name": "Queen Victoria", "company_code": "CUNARD", "company_name": "Cunard" },
+    { "mmsi": "311019600", "name": "Queen Elizabeth", "company_code": "CUNARD", "company_name": "Cunard" },
+    { "mmsi": "311001229", "name": "Queen Anne", "company_code": "CUNARD", "company_name": "Cunard" },
+    { "mmsi": "311000002", "name": "Queen Mary 2", "company_code": "CUNARD", "company_name": "Cunard" },
+
+    { "mmsi": "311001140", "name": "Icon of the Seas", "company_code": "ROYAL", "company_name": "Royal Caribbean" },
+    { "mmsi": "311001551", "name": "Star of the Seas", "company_code": "ROYAL", "company_name": "Royal Caribbean" },
+
+    { "mmsi": "311000732", "name": "Scarlet Lady", "company_code": "VIRGIN", "company_name": "Virgin Cruise" },
+    { "mmsi": "311000908", "name": "Valiant Lady", "company_code": "VIRGIN", "company_name": "Virgin Cruise" },
+    { "mmsi": "311000910", "name": "Resilient Lady", "company_code": "VIRGIN", "company_name": "Virgin Cruise" },
+    { "mmsi": "311000912", "name": "Brilliant Lady", "company_code": "VIRGIN", "company_name": "Virgin Cruise" },
+
+    { "mmsi": "257099000", "name": "Norwegian Prima", "company_code": "NCL", "company_name": "Norwegian Cruise Line" },
+    { "mmsi": "311001127", "name": "Norwegian Viva", "company_code": "NCL", "company_name": "Norwegian Cruise Line" },
+    { "mmsi": "257173000", "name": "Norwegian Aqua", "company_code": "NCL", "company_name": "Norwegian Cruise Line" },
+    { "mmsi": "257132100", "name": "Oceania Vista", "company_code": "NCL", "company_name": "Norwegian Cruise Line" },
+
+    { "mmsi": "257041710", "name": "Viking Star", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257058690", "name": "Viking Sky", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257058680", "name": "Viking Sea", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257085730", "name": "Viking Orion", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257085740", "name": "Viking Jupiter", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257128500", "name": "Viking Venus", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257134300", "name": "Viking Mars", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257138300", "name": "Viking Neptune", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257142500", "name": "Viking Saturn", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257152900", "name": "Viking Vela", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257122100", "name": "Viking Octantis", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "257122200", "name": "Viking Polaris", "company_code": "VIKING", "company_name": "Viking Cruises" },
+    { "mmsi": "413535000", "name": "Viking Zhao Shang Yi Dun", "company_code": "CMV", "company_name": "China Merchants Viking Cruises" },
+
+    { "mmsi": "309117000", "name": "Silver Spirit", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
+    { "mmsi": "311000654", "name": "Silver Muse", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
+    { "mmsi": "311000754", "name": "Silver Moon", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
+    { "mmsi": "311000958", "name": "Silver Dawn", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
+    { "mmsi": "311001004", "name": "Silver Endeavor", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
+    { "mmsi": "311001050", "name": "Silver Nova", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
+    { "mmsi": "311001154", "name": "Silver Ray", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
+
+    { "mmsi": "311000574", "name": "Seabourn Encore", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
+    { "mmsi": "311000673", "name": "Seabourn Ovation", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
+    { "mmsi": "311000171", "name": "Seabourn Sojourn", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
+    { "mmsi": "311000305", "name": "Seabourn Quest", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
+    { "mmsi": "311000856", "name": "Seabourn Venture", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
+    { "mmsi": "311000977", "name": "Seabourn Pursuit", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
+
+    { "mmsi": "229983000", "name": "Le Boreal", "company_code": "PONANT", "company_name": "Compagnie du Ponant" },
+    { "mmsi": "229995000", "name": "L'Austral", "company_code": "PONANT", "company_name": "Compagnie du Ponant" },
+    { "mmsi": "229999000", "name": "Le Soleal", "company_code": "PONANT", "company_name": "Compagnie du Ponant" },
+    { "mmsi": "249682000", "name": "Le Lyrial", "company_code": "PONANT", "company_name": "Compagnie du Ponant" },
+
+    { "mmsi": "311000782", "name": "Azamara Pursuit", "company_code": "AZAMARA", "company_name": "Azamara Club Cruise" },
+    { "mmsi": "311000778", "name": "Azamara Onward (Ex Pacific Princess)", "company_code": "AZAMARA", "company_name": "Azamara Club Cruise" },
+
+    { "mmsi": "311000570", "name": "Mein Schiff Herz (ex Mein Schiff II)", "company_code": "TUI", "company_name": "TUI Cruises" },
+
+    { "mmsi": "257147700", "name": "Ritz Carlton Ilma", "company_code": "RITZ", "company_name": "Ritz-Carlton" },
+
+    { "mmsi": "229955000", "name": "Europa 2", "company_code": "HAPAG", "company_name": "Hapag-Lloyd Cruises" },
+
+    { "mmsi": "311000133", "name": "Pacific World (ex Sun Princess)", "company_code": "PEACEBOAT", "company_name": "Peace Boat" },
+
+    { "mmsi": "412080000", "name": "Adora Magic City", "company_code": "ADORA", "company_name": "Adora Cruises" }
+    
+    
   ]
 }
