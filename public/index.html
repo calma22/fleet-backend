@@ -2,79 +2,62 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>SMCS – Live Ship Tracker</title>
+  <title>SMCS – Worldwide Safety</title>
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
   <style>
     html, body {
       margin: 0;
       height: 100%;
       background: #000;
+      overflow: hidden;
     }
 
     #map {
       width: 100%;
       height: 100%;
-      background: #000;
     }
 
-    /* rimuove qualsiasi linea / seam */
-    .leaflet-tile {
-      border: none !important;
-      outline: none !important;
-    }
-
-    /* =========================
-       LOGO + TAGLINE (COME PRIMA)
-    ========================= */
-
-    #brand {
+    /* LOGO */
+    #logo {
       position: absolute;
       top: 14px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 600;
-      pointer-events: none;
+      z-index: 700;
       text-align: center;
+      pointer-events: none;
       opacity: 0.28;
     }
 
-    #brand img {
-      height: 64px;
-      width: auto;
+    #logo img {
+      height: 56px;
       display: block;
       margin: 0 auto;
     }
 
-    #brand .tagline {
+    #logo div {
       margin-top: 4px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
+      font-family: Arial, sans-serif;
       letter-spacing: 2.5px;
+      font-size: 12px;
       color: #cfd6dc;
     }
 
-    /* =========================
-       STATUS
-    ========================= */
-
-    #status {
+    /* SOLE / LUNA */
+    #themeToggle {
       position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-family: sans-serif;
-      font-size: 14px;
-      z-index: 1000;
-      display: none;
+      top: 14px;
+      right: 16px;
+      z-index: 700;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0.85;
+      user-select: none;
+    }
+    #themeToggle:hover {
+      opacity: 1;
     }
   </style>
 </head>
@@ -82,13 +65,12 @@
 
 <div id="map"></div>
 
-<!-- BRAND -->
-<div id="brand">
-  <img src="logo-martec-marine.png" alt="Martec Marine">
-  <div class="tagline">WORLDWIDE SAFETY</div>
+<div id="logo">
+  <img src="logo-martec-marine.png" alt="SMCS">
+  <div>WORLDWIDE SAFETY</div>
 </div>
 
-<div id="status">Waiting for live AIS data…</div>
+<div id="themeToggle">🌙</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -99,55 +81,46 @@
 
 const map = L.map("map", {
   worldCopyJump: false,
-  zoomControl: true,
-  inertia: true
+  zoomControl: true
 }).setView([20, 0], 2);
 
-/* blocco longitudine (come prima) */
-map.on("drag", () => {
-  const c = map.getCenter();
-  if (c.lng < -180) c.lng = -180;
-  if (c.lng > 180) c.lng = 180;
-  map.panTo(c, { animate: false });
-});
-
 /* =========================
-   TILE LAYERS (DAY / NIGHT)
+   TILE LAYERS
 ========================= */
 
 const darkLayer = L.tileLayer(
   "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
-  {
-    attribution: "© OpenStreetMap © Carto",
-    noWrap: true,
-    detectRetina: true
-  }
+  { noWrap: true }
 );
 
 const lightLayer = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  {
-    attribution: "© OpenStreetMap",
-    noWrap: true
-  }
+  { noWrap: true }
 );
 
 darkLayer.addTo(map);
 
-/* switch notte / giorno */
-L.control.layers(
-  {
-    "Night": darkLayer,
-    "Day": lightLayer
-  },
-  null,
-  {
-    position: "topright",
-    collapsed: true
-  }
-).addTo(map);
-
 setTimeout(() => map.invalidateSize(), 200);
+
+/* =========================
+   SOLE / LUNA
+========================= */
+
+let isDark = true;
+const themeToggle = document.getElementById("themeToggle");
+
+themeToggle.onclick = () => {
+  if (isDark) {
+    map.removeLayer(darkLayer);
+    lightLayer.addTo(map);
+    themeToggle.textContent = "☀️";
+  } else {
+    map.removeLayer(lightLayer);
+    darkLayer.addTo(map);
+    themeToggle.textContent = "🌙";
+  }
+  isDark = !isDark;
+};
 
 /* =========================
    SHIP LAYER
@@ -156,53 +129,39 @@ setTimeout(() => map.invalidateSize(), 200);
 const shipLayer = L.layerGroup().addTo(map);
 
 /* =========================
-   COMPANY COLORS
+   COMPANY COLORS (by NAME)
 ========================= */
 
-const companyColors = {
-  "MSC": "#0a84ff",
-  "COSTA": "#30d158",
-  "CARNIVAL": "#ff453a",
-  "ROYAL": "#ff9f0a",
-  "DISNEY": "#bf5af2",
-  "AIDA": "#ff6f00",
-  "PRINCESS": "#5b7db1",
-  "HAL": "#0b3d2e",
-  "PO": "#002b5c",
-  "POAUS": "#005aa7",
-  "CUNARD": "#8b0000",
-  "VIKING": "#9e9e9e",
-  "NCL": "#1c8adb",
-  "VIRGIN": "#c8102e",
-  "SILVERSEA": "#b9b9b9",
-  "SEABOURN": "#7a7a7a",
-  "PONANT": "#1f4e79",
-  "TUI": "#d0002d",
-  "AZAMARA": "#6a1b9a",
-  "RITZ": "#c9a23f",
-  "HAPAG": "#0a1a3a",
-  "ADORA": "#e60012",
-  "CMV": "#1565c0"
-};
-
-const defaultColor = "#9fa3a7";
+function companyFromName(name = "") {
+  const n = name.toUpperCase();
+  if (n.includes("MSC")) return "#0a84ff";
+  if (n.includes("COSTA")) return "#ffd200";
+  if (n.includes("CARNIVAL")) return "#ff453a";
+  if (n.includes("AIDA")) return "#ff6f00";
+  if (n.includes("DISNEY")) return "#bf5af2";
+  if (n.includes("VIKING")) return "#9e9e9e";
+  if (n.includes("PRINCESS")) return "#5b7db1";
+  if (n.includes("ROYAL")) return "#00205b";
+  if (n.includes("NORWEGIAN")) return "#1c8adb";
+  if (n.includes("VIRGIN")) return "#c8102e";
+  if (n.includes("SEABOURN")) return "#7a7a7a";
+  if (n.includes("SILVER")) return "#b9b9b9";
+  return "#9fa3a7"; // default
+}
 
 /* =========================
-   SHIP ICON (SVG – COME PRIMA)
+   ICON
 ========================= */
 
-function shipIcon(heading = 0, companyCode = null) {
-  const color = companyColors[(companyCode || "").toUpperCase()] || defaultColor;
+function shipIcon(heading = 0, name = "", simulated = false) {
+  const color = simulated ? "#ff453a" : companyFromName(name);
 
   return L.divIcon({
     className: "",
     html: `
       <svg width="26" height="26" viewBox="0 0 24 24"
            style="transform: rotate(${heading}deg)">
-        <polygon
-          points="12,2 21,22 12,18 3,22"
-          fill="${color}"
-        />
+        <polygon points="12,2 21,22 12,18 3,22" fill="${color}" />
       </svg>
     `,
     iconSize: [26, 26],
@@ -218,35 +177,24 @@ async function updateShips() {
   try {
     const res = await fetch("/ships", { cache: "no-store" });
     const ships = await res.json();
-    const status = document.getElementById("status");
 
     shipLayer.clearLayers();
-
-    if (!ships || ships.length === 0) {
-      status.style.display = "block";
-      return;
-    } else {
-      status.style.display = "none";
-    }
 
     ships.forEach(ship => {
       if (ship.lat == null || ship.lon == null) return;
 
       L.marker([ship.lat, ship.lon], {
-        icon: shipIcon(
-          ship.heading,
-          ship.company_code || ship.company || null
-        )
+        icon: shipIcon(ship.heading, ship.name, ship.simulated)
       })
       .addTo(shipLayer)
       .bindTooltip(
-        `<b>${ship.name}</b><br>${ship.company_name || ""}`,
+        `<b>${ship.name}</b>`,
         { direction: "top", offset: [0, -10] }
       );
     });
 
   } catch (err) {
-    console.error("Error fetching ships:", err);
+    console.error("Ship update error:", err);
   }
 }
 
