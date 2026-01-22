@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>SMCS – Worldwide Safety</title>
+  <title>SMCS – Live Ship Tracker</title>
 
   <link
     rel="stylesheet"
@@ -14,36 +14,67 @@
       margin: 0;
       height: 100%;
       background: #000;
-      overflow: hidden;
     }
 
     #map {
       width: 100%;
       height: 100%;
+      background: #000;
     }
 
-    /* LOGO */
-    #logo {
+    /* rimuove qualsiasi linea / seam */
+    .leaflet-tile {
+      border: none !important;
+      outline: none !important;
+    }
+
+    /* =========================
+       LOGO + TAGLINE
+    ========================= */
+
+    #brand {
       position: absolute;
-      top: 16px;
+      top: 14px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 1000;
-      text-align: center;
+      z-index: 600;
       pointer-events: none;
+      text-align: center;
+      opacity: 0.28;
     }
 
-    #logo img {
-      height: 48px;
-      opacity: 0.9;
+    #brand img {
+      height: 64px;
+      width: auto;
+      display: block;
+      margin: 0 auto;
     }
 
-    #logo div {
+    #brand .tagline {
       margin-top: 4px;
-      font-family: Arial, sans-serif;
-      letter-spacing: 2px;
+      font-family: Arial, Helvetica, sans-serif;
       font-size: 12px;
-      color: rgba(255,255,255,0.7);
+      letter-spacing: 2.5px;
+      color: #cfd6dc;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    #status {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-family: sans-serif;
+      font-size: 14px;
+      z-index: 1000;
+      display: none;
     }
   </style>
 </head>
@@ -51,10 +82,13 @@
 
 <div id="map"></div>
 
-<div id="logo">
-  <img src="logo.png" alt="SMCS Logo" />
-  <div>WORLDWIDE SAFETY</div>
+<!-- BRAND -->
+<div id="brand">
+  <img src="logo-martec-marine.png" alt="Martec Marine">
+  <div class="tagline">WORLDWIDE SAFETY</div>
 </div>
+
+<div id="status">Waiting for live AIS data…</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -65,101 +99,77 @@
 
 const map = L.map("map", {
   worldCopyJump: false,
-  maxBounds: [[-90, -180], [90, 180]],
-  maxBoundsViscosity: 1.0
+  zoomControl: true,
+  inertia: true
 }).setView([20, 0], 2);
 
-/* ===== BASE LAYERS ===== */
+/* blocco longitudine */
+map.on("drag", () => {
+  const c = map.getCenter();
+  if (c.lng < -180) c.lng = -180;
+  if (c.lng > 180) c.lng = 180;
+  map.panTo(c, { animate: false });
+});
 
-const darkLayer = L.tileLayer(
-  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-  { noWrap: true }
-);
+/* =========================
+   TILE (DARK – NO GRID)
+========================= */
 
-const lightLayer = L.tileLayer(
-  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  { noWrap: true }
-);
-
-darkLayer.addTo(map);
-
-/* ===== DAY / NIGHT SWITCH ===== */
-
-L.control.layers(
+L.tileLayer(
+  "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
   {
-    "Night": darkLayer,
-    "Day": lightLayer
-  },
-  null,
-  { position: "bottomright" }
+    attribution: "© OpenStreetMap © Carto",
+    noWrap: true,
+    detectRetina: true
+  }
 ).addTo(map);
 
-// kiosk resize fix
 setTimeout(() => map.invalidateSize(), 200);
-
-/* =========================
-   COMPANY COLORS
-========================= */
-
-const COMPANY_COLORS = {
-  "CARNIVAL": "#e31937",
-  "DISNEY": "#1b4cff",
-  "COSTA": "#ffd200",
-  "MSC": "#003a8f",
-  "AIDA": "#ff6f00",
-  "PRINCESS": "#5b7db1",
-  "HAL": "#0b3d2e",
-  "PO": "#002b5c",
-  "POAUS": "#005aa7",
-  "CUNARD": "#8b0000",
-  "VIKING": "#9e9e9e",
-  "NCL": "#1c8adb",
-  "VIRGIN": "#c8102e",
-  "SILVERSEA": "#b9b9b9",
-  "SEABOURN": "#7a7a7a",
-  "PONANT": "#1f4e79",
-  "TUI": "#d0002d",
-  "ROYAL": "#00205b",
-  "AZAMARA": "#6a1b9a",
-  "RITZ": "#c9a23f",
-  "PEACEBOAT": "#2e7d32",
-  "HAPAG": "#0a1a3a",
-  "ADORA": "#e60012",
-  "CMV": "#1565c0"
-};
-
-const DEFAULT_COLOR = "#9e9e9e";
-
-/* =========================
-   ICON
-========================= */
-
-function shipIcon(heading = 0, companyCode = "") {
-  const color = COMPANY_COLORS[companyCode] || DEFAULT_COLOR;
-
-  return L.divIcon({
-    className: "",
-    html: `
-      <div style="
-        width: 0;
-        height: 0;
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-        border-bottom: 14px solid ${color};
-        transform: rotate(${heading}deg);
-        transform-origin: center;
-      "></div>
-    `,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7]
-  });
-}
 
 /* =========================
    SHIP LAYER
 ========================= */
 
 const shipLayer = L.layerGroup().addTo(map);
+
+/* =========================
+   COMPANY COLORS
+========================= */
+
+const companyColors = {
+  "MSC": "#0a84ff",
+  "Costa": "#30d158",
+  "Carnival": "#ff453a",
+  "Royal Caribbean": "#ff9f0a",
+  "Disney": "#bf5af2"
+};
+
+const defaultColor = "#9fa3a7";
+
+/* =========================
+   SHIP ICON (SVG)
+========================= */
+
+function shipIcon(heading = 0, company = null, simulated = false) {
+  const color = simulated
+    ? "#ff453a"
+    : companyColors[company] || defaultColor;
+
+  return L.divIcon({
+    className: "",
+    html: `
+      <svg width="26" height="26" viewBox="0 0 24 24"
+           style="transform: rotate(${heading}deg)">
+        <polygon
+          points="12,2 21,22 12,18 3,22"
+          fill="${color}"
+        />
+      </svg>
+    `,
+    iconSize: [26, 26],
+    iconAnchor: [13, 13]
+  });
+}
 
 /* =========================
    UPDATE SHIPS
@@ -169,34 +179,34 @@ async function updateShips() {
   try {
     const res = await fetch("/ships", { cache: "no-store" });
     const ships = await res.json();
+    const status = document.getElementById("status");
 
     shipLayer.clearLayers();
+
+    if (!ships || ships.length === 0) {
+      status.style.display = "block";
+      return;
+    } else {
+      status.style.display = "none";
+    }
 
     ships.forEach(ship => {
       if (ship.lat == null || ship.lon == null) return;
 
-      const lat = Number(ship.lat);
-      const lon = Number(ship.lon);
-      if (Number.isNaN(lat) || Number.isNaN(lon)) return;
-
-      L.marker([lat, lon], {
-        icon: shipIcon(ship.heading, ship.company_code)
+      L.marker([ship.lat, ship.lon], {
+        icon: shipIcon(ship.heading, ship.company, ship.simulated)
       })
       .addTo(shipLayer)
       .bindTooltip(
-        `<b>${ship.name}</b><br>${ship.company_name}`,
-        { direction: "top", offset: [0, -8], opacity: 0.9 }
+        `<b>${ship.name}</b><br>${ship.company || ""}`,
+        { direction: "top", offset: [0, -10] }
       );
     });
 
   } catch (err) {
-    console.error("Ship update error:", err);
+    console.error("Error fetching ships:", err);
   }
 }
-
-/* =========================
-   START
-========================= */
 
 updateShips();
 setInterval(updateShips, 30000);
