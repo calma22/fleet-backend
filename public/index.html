@@ -47,12 +47,28 @@
       z-index: 1000;
       display: none;
     }
+
+    /* TOGGLE TEMA */
+    #themeToggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 1000;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
 
 <div id="map"></div>
 <div id="status">Waiting for live AIS data…</div>
+<div id="themeToggle">🌙</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -63,9 +79,20 @@
 
   const map = L.map("map").setView([20, 0], 2);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© OpenStreetMap"
-  }).addTo(map);
+  // LAYER MAPPA
+  const lightLayer = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    { attribution: "© OpenStreetMap" }
+  );
+
+  const darkLayer = L.tileLayer(
+    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    { attribution: "© OpenStreetMap © CartoDB" }
+  );
+
+  // Tema iniziale
+  let currentTheme = "dark";
+  darkLayer.addTo(map);
 
   // 🔧 FIX Leaflet post-reload
   setTimeout(() => {
@@ -73,7 +100,27 @@
   }, 200);
 
   /* =========================
-     LAYER GROUP (FIX DEFINITIVO)
+     TOGGLE TEMA
+  ========================= */
+
+  const themeToggle = document.getElementById("themeToggle");
+
+  themeToggle.onclick = () => {
+    if (currentTheme === "dark") {
+      map.removeLayer(darkLayer);
+      lightLayer.addTo(map);
+      currentTheme = "light";
+      themeToggle.textContent = "☀️";
+    } else {
+      map.removeLayer(lightLayer);
+      darkLayer.addTo(map);
+      currentTheme = "dark";
+      themeToggle.textContent = "🌙";
+    }
+  };
+
+  /* =========================
+     LAYER GROUP NAVI
   ========================= */
 
   const shipLayer = L.layerGroup().addTo(map);
@@ -108,7 +155,6 @@
       const ships = await res.json();
       const status = document.getElementById("status");
 
-      // 🔥 PULIZIA TOTALE OGNI UPDATE (chiave del fix)
       shipLayer.clearLayers();
 
       if (!ships || ships.length === 0) {
