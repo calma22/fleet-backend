@@ -59,6 +59,48 @@
     #themeToggle:hover {
       opacity: 1;
     }
+    /* =========================
+   ZOOM CONTROLS – FADE & SCALE
+========================= */
+
+.leaflet-control-zoom {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.leaflet-control-zoom a {
+  background: rgba(0, 0, 0, 0.55);
+  color: #e5e5e5;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 14px;
+  opacity: 0.35;
+  transform: scale(0.85);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+/* hover (desktop) */
+.leaflet-control-zoom a:hover {
+  opacity: 0.85;
+  transform: scale(1);
+}
+
+/* active (tap iPad / kiosk) */
+.leaflet-control-zoom a:active,
+.leaflet-control-zoom a:focus {
+  opacity: 1;
+  transform: scale(1);
+  background: rgba(0, 0, 0, 0.75);
+}
+
+/* separatore + / − più discreto */
+.leaflet-control-zoom a + a {
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
   </style>
 </head>
 <body>
