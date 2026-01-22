@@ -22,28 +22,45 @@
       background: #000;
     }
 
-    /* Rimuove qualsiasi seam */
+    /* rimuove qualsiasi linea / seam */
     .leaflet-tile {
       border: none !important;
       outline: none !important;
     }
 
-    /* Brand label */
-    #centerLabel {
+    /* =========================
+       LOGO + TAGLINE
+    ========================= */
+
+    #brand {
       position: absolute;
-      top: 18px;
+      top: 14px;
       left: 50%;
       transform: translateX(-50%);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 26px;
-      letter-spacing: 6px;
-      font-weight: 300;
-      color: rgba(255, 255, 255, 0.18);
+      z-index: 600;
       pointer-events: none;
-      user-select: none;
-      z-index: 500;
-      white-space: nowrap;
+      text-align: center;
+      opacity: 0.28;
     }
+
+    #brand img {
+      height: 64px;
+      width: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #brand .tagline {
+      margin-top: 4px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      color: #cfd6dc;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
 
     #status {
       position: absolute;
@@ -64,7 +81,13 @@
 <body>
 
 <div id="map"></div>
-<div id="centerLabel">SMCS WORLDWIDE SAFETY</div>
+
+<!-- BRAND -->
+<div id="brand">
+  <img src="logo-martec-marine.png" alt="Martec Marine">
+  <div class="tagline">WORLDWIDE SAFETY</div>
+</div>
+
 <div id="status">Waiting for live AIS data…</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -80,7 +103,7 @@ const map = L.map("map", {
   inertia: true
 }).setView([20, 0], 2);
 
-/* Blocco longitudine SENZA setMaxBounds */
+/* blocco longitudine */
 map.on("drag", () => {
   const c = map.getCenter();
   if (c.lng < -180) c.lng = -180;
@@ -89,7 +112,7 @@ map.on("drag", () => {
 });
 
 /* =========================
-   TILE CLEAN (NO GRID)
+   TILE (DARK – NO GRID)
 ========================= */
 
 L.tileLayer(
@@ -114,17 +137,17 @@ const shipLayer = L.layerGroup().addTo(map);
 ========================= */
 
 const companyColors = {
-  "MSC": "#007aff",
-  "Costa": "#34c759",
-  "Carnival": "#ff3b30",
-  "Royal Caribbean": "#ff9500",
-  "Disney": "#af52de"
+  "MSC": "#0a84ff",
+  "Costa": "#30d158",
+  "Carnival": "#ff453a",
+  "Royal Caribbean": "#ff9f0a",
+  "Disney": "#bf5af2"
 };
 
-const defaultColor = "#b0b0b0";
+const defaultColor = "#9fa3a7";
 
 /* =========================
-   SHIP ICON
+   SHIP ICON (SVG)
 ========================= */
 
 function shipIcon(heading = 0, company = null, simulated = false) {
