@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <title>SMCS – Live Ship Tracker</title>
 
-  <link rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
 
   <style>
     html, body {
@@ -20,13 +22,13 @@
       background: #000;
     }
 
-    /* 🔥 RIMUOVE COMPLETAMENTE LE SEAM DEI TILE */
+    /* Rimuove qualsiasi seam */
     .leaflet-tile {
-      outline: none !important;
       border: none !important;
+      outline: none !important;
     }
 
-    /* BRAND */
+    /* Brand label */
     #centerLabel {
       position: absolute;
       top: 18px;
@@ -69,31 +71,33 @@
 
 <script>
 /* =========================
-   MAP INIT (SENZA BOUNDS)
+   MAP INIT
 ========================= */
 
 const map = L.map("map", {
   worldCopyJump: false,
+  zoomControl: true,
   inertia: true
 }).setView([20, 0], 2);
 
-/* 🔒 BLOCCO DEL MONDO SENZA GRIGLIA */
+/* Blocco longitudine SENZA setMaxBounds */
 map.on("drag", () => {
-  const center = map.getCenter();
-  if (center.lng < -180) center.lng = -180;
-  if (center.lng > 180) center.lng = 180;
-  map.panTo(center, { animate: false });
+  const c = map.getCenter();
+  if (c.lng < -180) c.lng = -180;
+  if (c.lng > 180) c.lng = 180;
+  map.panTo(c, { animate: false });
 });
 
 /* =========================
-   TILE DARK CLEAN
+   TILE CLEAN (NO GRID)
 ========================= */
 
 L.tileLayer(
-  "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png",
+  "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
   {
-    attribution: "© OpenStreetMap © CartoDB",
-    noWrap: true
+    attribution: "© OpenStreetMap © Carto",
+    noWrap: true,
+    detectRetina: true
   }
 ).addTo(map);
 
@@ -110,14 +114,14 @@ const shipLayer = L.layerGroup().addTo(map);
 ========================= */
 
 const companyColors = {
-  "Carnival": "#ff3b30",
   "MSC": "#007aff",
   "Costa": "#34c759",
+  "Carnival": "#ff3b30",
   "Royal Caribbean": "#ff9500",
   "Disney": "#af52de"
 };
 
-const defaultColor = "#9e9e9e";
+const defaultColor = "#b0b0b0";
 
 /* =========================
    SHIP ICON
@@ -125,22 +129,22 @@ const defaultColor = "#9e9e9e";
 
 function shipIcon(heading = 0, company = null, simulated = false) {
   const color = simulated
-    ? "red"
+    ? "#ff453a"
     : companyColors[company] || defaultColor;
 
   return L.divIcon({
     className: "",
     html: `
-      <svg width="24" height="24" viewBox="0 0 24 24"
-           style="transform: rotate(${heading}deg);">
+      <svg width="26" height="26" viewBox="0 0 24 24"
+           style="transform: rotate(${heading}deg)">
         <polygon
-          points="12,2 20,22 12,18 4,22"
+          points="12,2 21,22 12,18 3,22"
           fill="${color}"
         />
       </svg>
     `,
-    iconSize: [24, 24],
-    iconAnchor: [12, 12]
+    iconSize: [26, 26],
+    iconAnchor: [13, 13]
   });
 }
 
@@ -171,7 +175,7 @@ async function updateShips() {
       })
       .addTo(shipLayer)
       .bindTooltip(
-        `<b>${ship.name}</b><br/>${ship.company || ""}`,
+        `<b>${ship.name}</b><br>${ship.company || ""}`,
         { direction: "top", offset: [0, -10] }
       );
     });
