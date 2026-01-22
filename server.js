@@ -47,7 +47,7 @@ ws.on("message", data => {
   const p = msg.Message.PositionReport;
   const mmsi = String(p.UserID);
 
-  // if (!ALLOWED_MMSI.includes(mmsi)) return;
+   if (!ALLOWED_MMSI.includes(mmsi)) return;
 
   const shipInfo = fleetConfig.fleet.find(s => s.mmsi === mmsi);
 
