@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
 
-  <!-- VIEWPORT – FONDAMENTALE -->
+  <!-- VIEWPORT CRITICO -->
   <meta
     name="viewport"
     content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -18,7 +18,7 @@
 
   <style>
     /* =========================
-       RESET & VIEWPORT FIX
+       RESET & ANTI-BUG
     ========================= */
 
     * {
@@ -48,8 +48,6 @@
       inset: 0;
       width: 100vw;
       height: 100vh;
-      max-width: 100vw;
-      max-height: 100vh;
       z-index: 1;
     }
 
@@ -119,22 +117,12 @@
       font-size: 14px;
       opacity: 0.35;
       transform: scale(0.85);
-      transition:
-        opacity 0.18s ease,
-        transform 0.18s ease,
-        background 0.18s ease;
+      transition: opacity 0.18s ease, transform 0.18s ease;
     }
 
     .leaflet-control-zoom a:hover {
       opacity: 0.85;
       transform: scale(1);
-    }
-
-    .leaflet-control-zoom a:active,
-    .leaflet-control-zoom a:focus {
-      opacity: 1;
-      transform: scale(1);
-      background: rgba(0, 0, 0, 0.75);
     }
 
     .leaflet-control-zoom a + a {
@@ -158,13 +146,29 @@
 
   <script>
     /* =========================
-       MAP INIT
+       MAP INIT – BUG LEAFLET FIX
     ========================= */
 
     const map = L.map("map", {
       zoomControl: true,
-      worldCopyJump: false
+      worldCopyJump: false,
+
+      // 🔥 FIX DEFINITIVO (NO SHRINK BUG)
+      zoomAnimation: false,
+      fadeAnimation: false,
+      markerZoomAnimation: false
     }).setView([20, 0], 2);
+
+    /* =========================
+       LIMITI MONDO (NO REPEAT)
+    ========================= */
+
+    const southWest = L.latLng(-85, -180);
+    const northEast = L.latLng(85, 180);
+    const worldBounds = L.latLngBounds(southWest, northEast);
+
+    map.setMaxBounds(worldBounds);
+    map.setMinZoom(2);
 
     /* =========================
        TILE LAYERS
@@ -183,16 +187,14 @@
     darkLayer.addTo(map);
 
     /* =========================
-       FIX SIZE (LOAD + RESIZE)
+       SIZE FIX (LOAD / RESIZE)
     ========================= */
 
-    const fixMapSize = () => map.invalidateSize();
-
-    window.addEventListener("load", fixMapSize);
-    window.addEventListener("resize", fixMapSize);
-    window.addEventListener("orientationchange", fixMapSize);
-
-    setTimeout(fixMapSize, 300);
+    const fixSize = () => map.invalidateSize();
+    window.addEventListener("load", fixSize);
+    window.addEventListener("resize", fixSize);
+    window.addEventListener("orientationchange", fixSize);
+    setTimeout(fixSize, 300);
 
     /* =========================
        THEME TOGGLE
@@ -279,10 +281,10 @@
             icon: shipIcon(ship.heading, ship.name, ship.simulated)
           })
           .addTo(shipLayer)
-          .bindTooltip(
-            `<b>${ship.name}</b>`,
-            { direction: "top", offset: [0, -10] }
-          );
+          .bindTooltip(`<b>${ship.name}</b>`, {
+            direction: "top",
+            offset: [0, -10]
+          });
         });
 
       } catch (err) {
