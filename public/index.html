@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -18,10 +17,6 @@
   />
 
   <style>
-    /* =========================
-       RESET
-    ========================= */
-
     * {
       box-sizing: border-box;
     }
@@ -35,10 +30,7 @@
       overflow: hidden;
     }
 
-    /* =========================
-       MAP – FULL VIEWPORT
-    ========================= */
-
+    /* MAP FULLSCREEN */
     #map {
       position: fixed;
       inset: 0;
@@ -47,10 +39,7 @@
       background: #000;
     }
 
-    /* =========================
-       LOGO
-    ========================= */
-
+    /* LOGO */
     #logo {
       position: fixed;
       top: 14px;
@@ -76,10 +65,7 @@
       color: #cfd6dc;
     }
 
-    /* =========================
-       THEME TOGGLE
-    ========================= */
-
+    /* THEME TOGGLE */
     #themeToggle {
       position: fixed;
       top: 14px;
@@ -91,10 +77,7 @@
       user-select: none;
     }
 
-    /* =========================
-       ZOOM CONTROLS
-    ========================= */
-
+    /* ZOOM CONTROLS */
     .leaflet-control-zoom {
       box-shadow: none !important;
       border: none !important;
@@ -132,14 +115,16 @@
 
   <script>
     /* =========================
-       MAP INIT – ZOOM FLUIDO
+       MAP INIT – MARINETRAFFIC STYLE
     ========================= */
 
     const map = L.map("map", {
       zoomControl: true,
-      worldCopyJump: false,
 
-      // 🎯 ZOOM FLUIDO CONTROLLATO
+      // 🌍 wrap controllato
+      worldCopyJump: true,
+
+      // 🎯 zoom fluido
       scrollWheelZoom: true,
       wheelDebounceTime: 120,
       wheelPxPerZoomLevel: 140,
@@ -149,35 +134,34 @@
       zoomAnimation: true,
       fadeAnimation: true,
       markerZoomAnimation: true
-    }).setView([20, 0], 2);
+    });
 
     /* =========================
-       WORLD LIMIT (NO REPEAT)
-    ========================= */
-
-    const worldBounds = L.latLngBounds(
-      L.latLng(-85, -180),
-      L.latLng(85, 180)
-    );
-
-    map.setMaxBounds(worldBounds);
-    map.setMinZoom(2);
-
-    /* =========================
-       TILE LAYERS
+       TILE LAYERS (WRAP ATTIVO)
     ========================= */
 
     const darkLayer = L.tileLayer(
       "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
-      { noWrap: true }
+      { noWrap: false }
     );
 
     const lightLayer = L.tileLayer(
       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      { noWrap: true }
+      { noWrap: false }
     );
 
     darkLayer.addTo(map);
+
+    /* =========================
+       FIT WORLD (RIEMPI SCHERMO)
+    ========================= */
+
+    map.fitWorld({ animate: false });
+
+    // blocca zoom minimo DOPO il fit
+    map.once("zoomend", () => {
+      map.setMinZoom(map.getZoom());
+    });
 
     /* =========================
        FIX SIZE
