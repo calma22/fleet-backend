@@ -15,8 +15,8 @@
     }
 
     #map {
-      width: 100vw;
-      height: 100vh;
+      position: absolute;
+      inset: 0;
     }
 
     /* LOGO */
@@ -126,21 +126,12 @@ const map = L.map("map", {
   zoomControl: true
 }).setView([20, 0], 2);
 
-  function fixMapSize() {
-  map.invalidateSize(true);
-}
+/* tile layer */
+darkLayer.addTo(map);
 
-// subito
-// fixMapSize();
-
-// dopo che tutto è caricato
+/* 🔧 FIX DEFINITIVO */
 window.addEventListener("load", () => {
-  setTimeout(fixMapSize, 100);
-});
-
-// se cambia dimensione finestra
-window.addEventListener("resize", () => {
-  setTimeout(fixMapSize, 100);
+  map.invalidateSize();
 });
   
 /* =========================
