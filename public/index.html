@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
 
-  <!-- VIEWPORT CRITICO -->
+  <!-- VIEWPORT -->
   <meta
     name="viewport"
-    content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="width=device-width, height=device-height, initial-scale=1.0"
   />
 
   <title>SMCS – Worldwide Safety</title>
@@ -18,7 +18,7 @@
 
   <style>
     /* =========================
-       RESET & ANTI-BUG
+       RESET
     ========================= */
 
     * {
@@ -30,17 +30,12 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      max-width: 100vw;
-      overflow: hidden;
       background: #000;
-    }
-
-    body {
-      overflow-x: hidden !important;
+      overflow: hidden;
     }
 
     /* =========================
-       MAP – TRUE FULLSCREEN
+       MAP – FULL VIEWPORT
     ========================= */
 
     #map {
@@ -48,7 +43,7 @@
       inset: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 1;
+      background: #000;
     }
 
     /* =========================
@@ -95,12 +90,8 @@
       user-select: none;
     }
 
-    #themeToggle:hover {
-      opacity: 1;
-    }
-
     /* =========================
-       ZOOM CONTROLS – CLEAN
+       ZOOM CONTROLS
     ========================= */
 
     .leaflet-control-zoom {
@@ -115,18 +106,12 @@
       height: 28px;
       line-height: 28px;
       font-size: 14px;
-      opacity: 0.35;
-      transform: scale(0.85);
-      transition: opacity 0.18s ease, transform 0.18s ease;
+      opacity: 0.4;
+      transition: opacity 0.15s ease;
     }
 
     .leaflet-control-zoom a:hover {
-      opacity: 0.85;
-      transform: scale(1);
-    }
-
-    .leaflet-control-zoom a + a {
-      border-top: 1px solid rgba(255,255,255,0.08);
+      opacity: 0.9;
     }
   </style>
 </head>
@@ -146,26 +131,33 @@
 
   <script>
     /* =========================
-       MAP INIT – BUG LEAFLET FIX
+       MAP INIT – ZOOM FLUIDO
     ========================= */
 
     const map = L.map("map", {
       zoomControl: true,
       worldCopyJump: false,
 
-      // 🔥 FIX DEFINITIVO (NO SHRINK BUG)
-      zoomAnimation: false,
-      fadeAnimation: false,
-      markerZoomAnimation: false
+      // 🎯 ZOOM FLUIDO CONTROLLATO
+      scrollWheelZoom: true,
+      wheelDebounceTime: 120,
+      wheelPxPerZoomLevel: 140,
+      zoomSnap: 0.5,
+      zoomDelta: 0.5,
+
+      zoomAnimation: true,
+      fadeAnimation: true,
+      markerZoomAnimation: true
     }).setView([20, 0], 2);
 
     /* =========================
-       LIMITI MONDO (NO REPEAT)
+       WORLD LIMIT (NO REPEAT)
     ========================= */
 
-    const southWest = L.latLng(-85, -180);
-    const northEast = L.latLng(85, 180);
-    const worldBounds = L.latLngBounds(southWest, northEast);
+    const worldBounds = L.latLngBounds(
+      L.latLng(-85, -180),
+      L.latLng(85, 180)
+    );
 
     map.setMaxBounds(worldBounds);
     map.setMinZoom(2);
@@ -187,13 +179,12 @@
     darkLayer.addTo(map);
 
     /* =========================
-       SIZE FIX (LOAD / RESIZE)
+       FIX SIZE
     ========================= */
 
     const fixSize = () => map.invalidateSize();
     window.addEventListener("load", fixSize);
     window.addEventListener("resize", fixSize);
-    window.addEventListener("orientationchange", fixSize);
     setTimeout(fixSize, 300);
 
     /* =========================
@@ -217,14 +208,10 @@
     };
 
     /* =========================
-       SHIP LAYER
+       SHIPS
     ========================= */
 
     const shipLayer = L.layerGroup().addTo(map);
-
-    /* =========================
-       COMPANY COLORS
-    ========================= */
 
     function companyFromName(name = "") {
       const n = name.toUpperCase();
@@ -238,34 +225,23 @@
       if (n.includes("ROYAL")) return "#00205b";
       if (n.includes("NORWEGIAN")) return "#1c8adb";
       if (n.includes("VIRGIN")) return "#c8102e";
-      if (n.includes("SEABOURN")) return "#7a7a7a";
-      if (n.includes("SILVER")) return "#b9b9b9";
       return "#9fa3a7";
     }
 
-    /* =========================
-       SHIP ICON
-    ========================= */
-
-    function shipIcon(heading = 0, name = "", simulated = false) {
-      const color = simulated ? "#ff453a" : companyFromName(name);
-
+    function shipIcon(heading = 0, name = "") {
       return L.divIcon({
         className: "",
         html: `
           <svg width="26" height="26" viewBox="0 0 24 24"
                style="transform: rotate(${heading}deg)">
-            <polygon points="12,2 21,22 12,18 3,22" fill="${color}" />
+            <polygon points="12,2 21,22 12,18 3,22"
+                     fill="${companyFromName(name)}" />
           </svg>
         `,
         iconSize: [26, 26],
         iconAnchor: [13, 13]
       });
     }
-
-    /* =========================
-       UPDATE SHIPS
-    ========================= */
 
     async function updateShips() {
       try {
@@ -278,17 +254,13 @@
           if (ship.lat == null || ship.lon == null) return;
 
           L.marker([ship.lat, ship.lon], {
-            icon: shipIcon(ship.heading, ship.name, ship.simulated)
+            icon: shipIcon(ship.heading, ship.name)
           })
           .addTo(shipLayer)
-          .bindTooltip(`<b>${ship.name}</b>`, {
-            direction: "top",
-            offset: [0, -10]
-          });
+          .bindTooltip(`<b>${ship.name}</b>`);
         });
-
-      } catch (err) {
-        console.error("Ship update error:", err);
+      } catch (e) {
+        console.error(e);
       }
     }
 
