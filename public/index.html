@@ -2,26 +2,63 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
+
+  <!-- VIEWPORT – FONDAMENTALE -->
+  <meta
+    name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+
   <title>SMCS – Worldwide Safety</title>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
 
   <style>
+    /* =========================
+       RESET & VIEWPORT FIX
+    ========================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
     html, body {
       margin: 0;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-    }
-
-    #map {
+      padding: 0;
       width: 100%;
       height: 100%;
+      max-width: 100vw;
+      overflow: hidden;
+      background: #000;
     }
 
-    /* LOGO */
+    body {
+      overflow-x: hidden !important;
+    }
+
+    /* =========================
+       MAP – TRUE FULLSCREEN
+    ========================= */
+
+    #map {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      z-index: 1;
+    }
+
+    /* =========================
+       LOGO
+    ========================= */
+
     #logo {
-      position: absolute;
+      position: fixed;
       top: 14px;
       left: 50%;
       transform: translateX(-50%);
@@ -45,9 +82,12 @@
       color: #cfd6dc;
     }
 
-    /* SOLE / LUNA */
+    /* =========================
+       THEME TOGGLE
+    ========================= */
+
     #themeToggle {
-      position: absolute;
+      position: fixed;
       top: 14px;
       right: 16px;
       z-index: 700;
@@ -56,193 +96,203 @@
       opacity: 0.85;
       user-select: none;
     }
+
     #themeToggle:hover {
       opacity: 1;
     }
+
     /* =========================
-   ZOOM CONTROLS – FADE & SCALE
-========================= */
+       ZOOM CONTROLS – CLEAN
+    ========================= */
 
-.leaflet-control-zoom {
-  box-shadow: none !important;
-  border: none !important;
-}
+    .leaflet-control-zoom {
+      box-shadow: none !important;
+      border: none !important;
+    }
 
-.leaflet-control-zoom a {
-  background: rgba(0, 0, 0, 0.55);
-  color: #e5e5e5;
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
-  font-size: 14px;
-  opacity: 0.35;
-  transform: scale(0.85);
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease,
-    background 0.18s ease;
-}
+    .leaflet-control-zoom a {
+      background: rgba(0, 0, 0, 0.55);
+      color: #e5e5e5;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      font-size: 14px;
+      opacity: 0.35;
+      transform: scale(0.85);
+      transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        background 0.18s ease;
+    }
 
-/* hover (desktop) */
-.leaflet-control-zoom a:hover {
-  opacity: 0.85;
-  transform: scale(1);
-}
+    .leaflet-control-zoom a:hover {
+      opacity: 0.85;
+      transform: scale(1);
+    }
 
-/* active (tap iPad / kiosk) */
-.leaflet-control-zoom a:active,
-.leaflet-control-zoom a:focus {
-  opacity: 1;
-  transform: scale(1);
-  background: rgba(0, 0, 0, 0.75);
-}
+    .leaflet-control-zoom a:active,
+    .leaflet-control-zoom a:focus {
+      opacity: 1;
+      transform: scale(1);
+      background: rgba(0, 0, 0, 0.75);
+    }
 
-/* separatore + / − più discreto */
-.leaflet-control-zoom a + a {
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
+    .leaflet-control-zoom a + a {
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
   </style>
 </head>
+
 <body>
 
-<div id="map"></div>
+  <div id="map"></div>
 
-<div id="logo">
-  <img src="logo-martec-marine.png" alt="SMCS">
-  <div>WORLDWIDE SAFETY</div>
-</div>
+  <div id="logo">
+    <img src="logo-martec-marine.png" alt="SMCS">
+    <div>WORLDWIDE SAFETY</div>
+  </div>
 
-<div id="themeToggle">🌙</div>
+  <div id="themeToggle">🌙</div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script>
-/* =========================
-   MAP INIT
-========================= */
+  <script>
+    /* =========================
+       MAP INIT
+    ========================= */
 
-const map = L.map("map", {
-  worldCopyJump: false,
-  zoomControl: true
-}).setView([20, 0], 2);
+    const map = L.map("map", {
+      zoomControl: true,
+      worldCopyJump: false
+    }).setView([20, 0], 2);
 
-/* =========================
-   TILE LAYERS
-========================= */
+    /* =========================
+       TILE LAYERS
+    ========================= */
 
-const darkLayer = L.tileLayer(
-  "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
-  { noWrap: true }
-);
+    const darkLayer = L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
+      { noWrap: true }
+    );
 
-const lightLayer = L.tileLayer(
-  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  { noWrap: true }
-);
+    const lightLayer = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      { noWrap: true }
+    );
 
-darkLayer.addTo(map);
-
-setTimeout(() => map.invalidateSize(), 200);
-
-/* =========================
-   SOLE / LUNA
-========================= */
-
-let isDark = true;
-const themeToggle = document.getElementById("themeToggle");
-
-themeToggle.onclick = () => {
-  if (isDark) {
-    map.removeLayer(darkLayer);
-    lightLayer.addTo(map);
-    themeToggle.textContent = "☀️";
-  } else {
-    map.removeLayer(lightLayer);
     darkLayer.addTo(map);
-    themeToggle.textContent = "🌙";
-  }
-  isDark = !isDark;
-};
 
-/* =========================
-   SHIP LAYER
-========================= */
+    /* =========================
+       FIX SIZE (LOAD + RESIZE)
+    ========================= */
 
-const shipLayer = L.layerGroup().addTo(map);
+    const fixMapSize = () => map.invalidateSize();
 
-/* =========================
-   COMPANY COLORS (by NAME)
-========================= */
+    window.addEventListener("load", fixMapSize);
+    window.addEventListener("resize", fixMapSize);
+    window.addEventListener("orientationchange", fixMapSize);
 
-function companyFromName(name = "") {
-  const n = name.toUpperCase();
-  if (n.includes("MSC")) return "#0a84ff";
-  if (n.includes("COSTA")) return "#ffd200";
-  if (n.includes("CARNIVAL")) return "#ff453a";
-  if (n.includes("AIDA")) return "#ff6f00";
-  if (n.includes("DISNEY")) return "#bf5af2";
-  if (n.includes("VIKING")) return "#9e9e9e";
-  if (n.includes("PRINCESS")) return "#5b7db1";
-  if (n.includes("ROYAL")) return "#00205b";
-  if (n.includes("NORWEGIAN")) return "#1c8adb";
-  if (n.includes("VIRGIN")) return "#c8102e";
-  if (n.includes("SEABOURN")) return "#7a7a7a";
-  if (n.includes("SILVER")) return "#b9b9b9";
-  return "#9fa3a7"; // default
-}
+    setTimeout(fixMapSize, 300);
 
-/* =========================
-   ICON
-========================= */
+    /* =========================
+       THEME TOGGLE
+    ========================= */
 
-function shipIcon(heading = 0, name = "", simulated = false) {
-  const color = simulated ? "#ff453a" : companyFromName(name);
+    let isDark = true;
+    const themeToggle = document.getElementById("themeToggle");
 
-  return L.divIcon({
-    className: "",
-    html: `
-      <svg width="26" height="26" viewBox="0 0 24 24"
-           style="transform: rotate(${heading}deg)">
-        <polygon points="12,2 21,22 12,18 3,22" fill="${color}" />
-      </svg>
-    `,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13]
-  });
-}
+    themeToggle.onclick = () => {
+      if (isDark) {
+        map.removeLayer(darkLayer);
+        lightLayer.addTo(map);
+        themeToggle.textContent = "☀️";
+      } else {
+        map.removeLayer(lightLayer);
+        darkLayer.addTo(map);
+        themeToggle.textContent = "🌙";
+      }
+      isDark = !isDark;
+    };
 
-/* =========================
-   UPDATE SHIPS
-========================= */
+    /* =========================
+       SHIP LAYER
+    ========================= */
 
-async function updateShips() {
-  try {
-    const res = await fetch("/ships", { cache: "no-store" });
-    const ships = await res.json();
+    const shipLayer = L.layerGroup().addTo(map);
 
-    shipLayer.clearLayers();
+    /* =========================
+       COMPANY COLORS
+    ========================= */
 
-    ships.forEach(ship => {
-      if (ship.lat == null || ship.lon == null) return;
+    function companyFromName(name = "") {
+      const n = name.toUpperCase();
+      if (n.includes("MSC")) return "#0a84ff";
+      if (n.includes("COSTA")) return "#ffd200";
+      if (n.includes("CARNIVAL")) return "#ff453a";
+      if (n.includes("AIDA")) return "#ff6f00";
+      if (n.includes("DISNEY")) return "#bf5af2";
+      if (n.includes("VIKING")) return "#9e9e9e";
+      if (n.includes("PRINCESS")) return "#5b7db1";
+      if (n.includes("ROYAL")) return "#00205b";
+      if (n.includes("NORWEGIAN")) return "#1c8adb";
+      if (n.includes("VIRGIN")) return "#c8102e";
+      if (n.includes("SEABOURN")) return "#7a7a7a";
+      if (n.includes("SILVER")) return "#b9b9b9";
+      return "#9fa3a7";
+    }
 
-      L.marker([ship.lat, ship.lon], {
-        icon: shipIcon(ship.heading, ship.name, ship.simulated)
-      })
-      .addTo(shipLayer)
-      .bindTooltip(
-        `<b>${ship.name}</b>`,
-        { direction: "top", offset: [0, -10] }
-      );
-    });
+    /* =========================
+       SHIP ICON
+    ========================= */
 
-  } catch (err) {
-    console.error("Ship update error:", err);
-  }
-}
+    function shipIcon(heading = 0, name = "", simulated = false) {
+      const color = simulated ? "#ff453a" : companyFromName(name);
 
-updateShips();
-setInterval(updateShips, 30000);
-</script>
+      return L.divIcon({
+        className: "",
+        html: `
+          <svg width="26" height="26" viewBox="0 0 24 24"
+               style="transform: rotate(${heading}deg)">
+            <polygon points="12,2 21,22 12,18 3,22" fill="${color}" />
+          </svg>
+        `,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13]
+      });
+    }
+
+    /* =========================
+       UPDATE SHIPS
+    ========================= */
+
+    async function updateShips() {
+      try {
+        const res = await fetch("/ships", { cache: "no-store" });
+        const ships = await res.json();
+
+        shipLayer.clearLayers();
+
+        ships.forEach(ship => {
+          if (ship.lat == null || ship.lon == null) return;
+
+          L.marker([ship.lat, ship.lon], {
+            icon: shipIcon(ship.heading, ship.name, ship.simulated)
+          })
+          .addTo(shipLayer)
+          .bindTooltip(
+            `<b>${ship.name}</b>`,
+            { direction: "top", offset: [0, -10] }
+          );
+        });
+
+      } catch (err) {
+        console.error("Ship update error:", err);
+      }
+    }
+
+    updateShips();
+    setInterval(updateShips, 30000);
+  </script>
 
 </body>
 </html>
