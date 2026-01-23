@@ -47,7 +47,7 @@ ws.on("message", data => {
   const p = msg.Message.PositionReport;
   const mmsi = String(p.UserID);
 
-   if (!ALLOWED_MMSI.includes(mmsi)) return;
+  if (!ALLOWED_MMSI.includes(mmsi)) return;
 
   const shipInfo = fleetConfig.fleet.find(s => s.mmsi === mmsi);
 
@@ -58,10 +58,25 @@ ws.on("message", data => {
     lon: p.Longitude,
     speed: p.Sog,
     heading: p.Cog,
-    simulated: false,
-    timestamp: new Date().toISOString()
+
+    lastSeen: Date.now(),
+    isLive: true
   };
 });
+
+/* ==============================
+   MEMORY LOGIC (12 HOURS)
+================================ */
+setInterval(() => {
+  const now = Date.now();
+  const MEMORY_LIMIT = 12 * 60 * 60 * 1000;
+
+  Object.values(ships).forEach(ship => {
+    if (now - ship.lastSeen > MEMORY_LIMIT) {
+      ship.isLive = false;
+    }
+  });
+}, 60 * 1000);
 
 /* ==============================
    API ENDPOINT
