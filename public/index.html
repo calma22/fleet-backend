@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
 
-  <!-- VIEWPORT -->
   <meta
     name="viewport"
     content="width=device-width, height=device-height, initial-scale=1.0"
@@ -115,16 +114,14 @@
 
   <script>
     /* =========================
-       MAP INIT – MARINETRAFFIC STYLE
+       MAP INIT – MT STYLE
     ========================= */
 
     const map = L.map("map", {
       zoomControl: true,
-
-      // 🌍 wrap controllato
       worldCopyJump: true,
 
-      // 🎯 zoom fluido
+      // zoom fluido
       scrollWheelZoom: true,
       wheelDebounceTime: 120,
       wheelPxPerZoomLevel: 140,
@@ -153,18 +150,28 @@
     darkLayer.addTo(map);
 
     /* =========================
-       FIT WORLD (RIEMPI SCHERMO)
+       INITIAL VIEW – FULL HEIGHT
     ========================= */
 
-    map.fitWorld({ animate: false });
+    // centro del mondo
+    map.setView([20, 0], 2);
 
-    // blocca zoom minimo DOPO il fit
-    map.once("zoomend", () => {
-      map.setMinZoom(map.getZoom());
-    });
+    setTimeout(() => {
+      // bounds "editoriali": tagliamo Antartide all'avvio
+      const initialBounds = L.latLngBounds(
+        L.latLng(-60, -180),
+        L.latLng(85, 180)
+      );
+
+      const initialZoom = map.getBoundsZoom(initialBounds, true);
+      map.setZoom(initialZoom);
+
+      // blocca solo questo come minimo
+      map.setMinZoom(initialZoom);
+    }, 0);
 
     /* =========================
-       FIX SIZE
+       RESIZE SAFETY
     ========================= */
 
     const fixSize = () => map.invalidateSize();
