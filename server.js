@@ -17,7 +17,7 @@ const fleetConfig = JSON.parse(
 );
 
 /* ==============================
-   PRE-POPULATE FLEET
+   PRE-POPULATE FLEET (IN MEMORY)
 ================================ */
 const ships = {};
 
@@ -25,7 +25,6 @@ fleetConfig.fleet.forEach(ship => {
   ships[ship.mmsi] = {
     mmsi: ship.mmsi,
     name: ship.name,
-    company: ship.company_name,
 
     lat: null,
     lon: null,
@@ -38,73 +37,121 @@ fleetConfig.fleet.forEach(ship => {
 });
 
 /* ==============================
-   AISSTREAM CONNECTION
+   AISSTREAM ROBUST CONNECTION
 ================================ */
-const ws = new WebSocket("wss://stream.aisstream.io/v0/stream");
+let ws = null;
+let lastMessageAt = 0;
+let reconnectTimer = null;
 
-ws.on("open", () => {
-  console.log("Connected to AISStream");
+const AISSTREAM_URL = "wss://stream.aisstream.io/v0/stream";
+const WATCHDOG_LIMIT = 5 * 60 * 1000; // 5 minuti
 
-  ws.send(JSON.stringify({
-    APIKey: AISSTREAM_KEY,
-    BoundingBoxes: [
-      [[-90, -180], [90, 180]]
-    ]
-  }));
-});
+function connectAISStream() {
+  console.log("🔌 Connecting to AISStream...");
 
-ws.on("message", data => {
-  const msg = JSON.parse(data);
-  const message = msg.Message;
+  ws = new WebSocket(AISSTREAM_URL);
 
-  if (!message) return;
+  ws.on("open", () => {
+    console.log("✅ AISStream connected");
+    lastMessageAt = Date.now();
 
-  /* -------- POSITION REPORT -------- */
-  if (message.PositionReport) {
-    const p = message.PositionReport;
-    const mmsi = String(p.UserID);
-    if (!ships[mmsi]) return;
+    ws.send(JSON.stringify({
+      APIKey: AISSTREAM_KEY,
+      BoundingBoxes: [
+        [[-90, -180], [90, 180]]
+      ]
+    }));
+  });
 
-    ships[mmsi] = {
-      ...ships[mmsi],
-      lat: p.Latitude,
-      lon: p.Longitude,
-      speed: p.Sog,
-      heading: p.Cog,
-      lastSeen: Date.now(),
-      state: "LIVE"
-    };
-  }
+  ws.on("message", data => {
+    lastMessageAt = Date.now();
 
-  /* -------- STATIC DATA -------- */
-  if (message.StaticData || message.ShipStaticData) {
-    const s = message.StaticData || message.ShipStaticData;
-    const mmsi = String(s.UserID);
-    if (!ships[mmsi]) return;
+    try {
+      const msg = JSON.parse(data);
+      const message = msg.Message;
 
-    // aggiorna solo presenza
-    if (!ships[mmsi].lastSeen) {
-      ships[mmsi].lastSeen = Date.now();
+      if (!message?.PositionReport) return;
+
+      const p = message.PositionReport;
+      const mmsi = String(p.UserID);
+      if (!ships[mmsi]) return;
+
+      ships[mmsi] = {
+        ...ships[mmsi],
+        lat: p.Latitude,
+        lon: p.Longitude,
+        speed: p.Sog,
+        heading: p.Cog,
+        lastSeen: Date.now(),
+        state: "LIVE"
+      };
+    } catch (err) {
+      console.error("AISStream message parse error:", err);
     }
+  });
+
+  ws.on("close", (code, reason) => {
+    console.error(
+      "❌ AISStream closed",
+      code,
+      reason?.toString()
+    );
+    scheduleReconnect();
+  });
+
+  ws.on("error", err => {
+    console.error("❌ AISStream error:", err);
+    scheduleReconnect();
+  });
+}
+
+function scheduleReconnect() {
+  if (reconnectTimer) return;
+
+  reconnectTimer = setTimeout(() => {
+    reconnectTimer = null;
+    try {
+      ws?.terminate();
+    } catch {}
+    connectAISStream();
+  }, 5000); // 5 secondi
+}
+
+/* ==============================
+   WATCHDOG (STALE CONNECTION)
+================================ */
+setInterval(() => {
+  if (!lastMessageAt) return;
+
+  const delta = Date.now() - lastMessageAt;
+
+  if (delta > WATCHDOG_LIMIT) {
+    console.warn(
+      "⚠️ AISStream stale for",
+      Math.floor(delta / 1000),
+      "seconds – reconnecting"
+    );
+
+    try {
+      ws?.terminate();
+    } catch {}
+    connectAISStream();
   }
-});
+}, 60 * 1000);
 
 /* ==============================
    MEMORY LOGIC (12h)
 ================================ */
+const MEMORY_LIMIT = 12 * 60 * 60 * 1000;
+
 setInterval(() => {
   const now = Date.now();
-  const MEMORY_LIMIT = 12 * 60 * 60 * 1000;
 
   Object.values(ships).forEach(ship => {
     if (!ship.lastSeen) return;
 
-    if (now - ship.lastSeen <= MEMORY_LIMIT) {
-      if (ship.state !== "LIVE") {
-        ship.state = "RECENT";
-      }
-    } else {
-      ship.state = "UNKNOWN";
+    if (now - ship.lastSeen > MEMORY_LIMIT && ship.state === "LIVE") {
+      ship.state = "RECENT";
     }
   });
 }, 60 * 1000);
@@ -120,5 +167,6 @@ app.get("/ships", (req, res) => {
    START SERVER
 ================================ */
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  connectAISStream();
 });
