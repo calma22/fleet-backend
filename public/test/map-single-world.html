@@ -2,13 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Map Test – Providers</title>
+  <title>Map Test – All Providers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
   <style>
     html, body {
@@ -26,29 +23,39 @@
       height: 100vh;
     }
 
-    #toolbar {
+    #panel {
       position: fixed;
       top: 12px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 1000;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0,0,0,0.65);
       padding: 6px 10px;
       border-radius: 6px;
       display: flex;
-      gap: 8px;
-      font-size: 12px;
+      gap: 6px;
+      flex-wrap: wrap;
+      max-width: 95vw;
     }
 
-    #toolbar button {
+    #panel button {
       background: none;
-      border: none;
+      border: 1px solid rgba(255,255,255,0.15);
       color: #ccc;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 4px;
       cursor: pointer;
-      opacity: 0.7;
+      opacity: 0.75;
     }
 
-    #toolbar button:hover {
+    #panel button:hover {
+      opacity: 1;
+    }
+
+    #panel button.active {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
       opacity: 1;
     }
   </style>
@@ -57,12 +64,14 @@
 
 <div id="map"></div>
 
-<div id="toolbar">
-  <button data-layer="cartoDark">Carto Dark</button>
+<div id="panel">
+  <button data-layer="cartoDark" class="active">Carto Dark</button>
   <button data-layer="cartoLight">Carto Light</button>
   <button data-layer="esriDark">ESRI Dark</button>
+  <button data-layer="esriLight">ESRI Light</button>
   <button data-layer="esriSat">ESRI Sat</button>
   <button data-layer="stamen">Stamen</button>
+  <button data-layer="opentopo">OpenTopo</button>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -91,6 +100,10 @@
       "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
       { noWrap: true }
     ),
+    esriLight: L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      { noWrap: true }
+    ),
     esriSat: L.tileLayer(
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
       { noWrap: true }
@@ -98,14 +111,21 @@
     stamen: L.tileLayer(
       "https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
       { noWrap: true }
+    ),
+    opentopo: L.tileLayer(
+      "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+      { noWrap: true }
     )
   };
 
   let currentLayer = layers.cartoDark;
   currentLayer.addTo(map);
 
-  document.querySelectorAll("#toolbar button").forEach(btn => {
+  document.querySelectorAll("#panel button").forEach(btn => {
     btn.onclick = () => {
+      document.querySelectorAll("#panel button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
       map.removeLayer(currentLayer);
       currentLayer = layers[btn.dataset.layer];
       currentLayer.addTo(map);
