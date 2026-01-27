@@ -157,9 +157,11 @@
     });
 
     /* FULLSCREEN CONTROL */
-    map.addControl(new L.Control.Fullscreen({
-      position: "topleft"
-    }));
+    map.addControl(
+      L.control.fullscreen({
+        position: "topleft"
+      })
+    );
 
     const darkLayer = L.tileLayer(
       "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
