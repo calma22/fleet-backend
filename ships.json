@@ -53,6 +53,7 @@
     { "mmsi": "311001098", "name": "Disney Wish", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
     { "mmsi": "311001221", "name": "Disney Treasure", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
     { "mmsi": "311001540", "name": "Disney Destiny", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
+    { "mmsi": "311000934", "name": "Disney Adventure", "company_code": "DISNEY", "company_name": "Disney Cruise Line" },
 
     { "mmsi": "503000109", "name": "Pacific Explorer (ex Dawn Princess)", "company_code": "POAUS", "company_name": "P&O Cruises Australia" },
     { "mmsi": "503000139", "name": "Pacific Adventure (ex Golden Princess)", "company_code": "POAUS", "company_name": "P&O Cruises Australia" },
@@ -141,7 +142,7 @@
     { "mmsi": "311001050", "name": "Silver Nova", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
     { "mmsi": "311001154", "name": "Silver Ray", "company_code": "SILVERSEA", "company_name": "Silversea Cruises" },
 
-    { "mmsi": "311000574", "name": "Seabourn Encore", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
+    { "mmsi": "311000464", "name": "Seabourn Encore", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
     { "mmsi": "311000673", "name": "Seabourn Ovation", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
     { "mmsi": "311000171", "name": "Seabourn Sojourn", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
     { "mmsi": "311000305", "name": "Seabourn Quest", "company_code": "SEABOURN", "company_name": "Seabourn Cruise Line" },
