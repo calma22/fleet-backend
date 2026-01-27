@@ -115,6 +115,33 @@
     .leaflet-control-fullscreen a:hover {
       opacity: 0.9;
     }
+    
+    /* =========================
+   FULLSCREEN FIX
+    ========================= */
+
+/* Quando la mappa è in fullscreen */
+.leaflet-container:fullscreen ~ #logo,
+.leaflet-container:fullscreen ~ #shipCounter,
+.leaflet-container:fullscreen ~ #themeToggle {
+  position: fixed;
+  z-index: 1000;
+}
+
+/* Compatibilità browser */
+.leaflet-container:-webkit-full-screen ~ #logo,
+.leaflet-container:-webkit-full-screen ~ #shipCounter,
+.leaflet-container:-webkit-full-screen ~ #themeToggle {
+  position: fixed;
+  z-index: 1000;
+}
+
+.leaflet-container:-moz-full-screen ~ #logo,
+.leaflet-container:-moz-full-screen ~ #shipCounter,
+.leaflet-container:-moz-full-screen ~ #themeToggle {
+  position: fixed;
+  z-index: 1000;
+}
   </style>
 </head>
 
