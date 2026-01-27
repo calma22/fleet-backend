@@ -6,7 +6,6 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Leaflet -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -29,7 +28,6 @@
       background: #000;
     }
 
-    /* Logo */
     #logo {
       position: absolute;
       top: 12px;
@@ -40,7 +38,6 @@
       pointer-events: none;
     }
 
-    /* Counter */
     #counter {
       position: absolute;
       bottom: 12px;
@@ -61,54 +58,39 @@
   <div id="counter">loading…</div>
   <div id="map"></div>
 
-  <!-- Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
     /* =========================
-       MAP SETUP
+       MAP SETUP (CORRETTO)
     ========================= */
-
-    const worldBounds = L.latLngBounds(
-      L.latLng(-90, -180),
-      L.latLng(90, 180)
-    );
 
     const map = L.map('map', {
       minZoom: 2,
       maxZoom: 8,
-      worldCopyJump: false,
-      maxBounds: worldBounds,
-      maxBoundsViscosity: 1.0
+      worldCopyJump: false
     });
 
-    // Stato iniziale: mondo centrato, Antartide fuori
-    map.setView([15, 0], 2);
+    // Vista iniziale: mondo centrato, Antartide appena fuori
+    map.setView([20, 0], 2);
 
     /* =========================
-       TILE LAYER (NO WRAP)
+       TILE LAYER (NO REPEAT)
     ========================= */
 
     L.tileLayer(
       'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
       {
         noWrap: true,
-        bounds: worldBounds,
         attribution: '&copy; OpenStreetMap & CartoDB'
       }
     ).addTo(map);
 
-    // Forza il pan sempre dentro il mondo
-    map.on('drag', () => {
-      map.panInsideBounds(worldBounds, { animate: false });
-    });
-
     /* =========================
-       SHIPS LAYER
+       SHIPS
     ========================= */
 
     const shipLayer = L.layerGroup().addTo(map);
-    const shipMarkers = new Map();
 
     function colorByState(state) {
       if (state === 'LIVE') return '#00ffcc';
@@ -153,22 +135,18 @@
         `${live} live · ${recent} recent · ${data.length} total`;
     }
 
-    /* =========================
-       DATA FETCH
-    ========================= */
-
     async function fetchShips() {
       try {
         const res = await fetch('/ships');
         const data = await res.json();
         updateShips(data);
       } catch (err) {
-        console.error('Fetch error', err);
+        console.error(err);
       }
     }
 
     fetchShips();
-    setInterval(fetchShips, 60_000);
+    setInterval(fetchShips, 60000);
   </script>
 
 </body>
