@@ -9,9 +9,16 @@
 
   <title>SMCS – Worldwide Safety</title>
 
+  <!-- Leaflet -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <!-- Leaflet Fullscreen -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.css"
   />
 
   <style>
@@ -86,13 +93,15 @@
       pointer-events: none;
     }
 
-    /* ZOOM CONTROLS */
-    .leaflet-control-zoom {
+    /* ZOOM + FULLSCREEN CONTROLS (same style) */
+    .leaflet-control-zoom,
+    .leaflet-control-fullscreen {
       box-shadow: none !important;
       border: none !important;
     }
 
-    .leaflet-control-zoom a {
+    .leaflet-control-zoom a,
+    .leaflet-control-fullscreen a {
       background: rgba(0,0,0,0.55);
       color: #e5e5e5;
       width: 28px;
@@ -102,7 +111,8 @@
       opacity: 0.4;
     }
 
-    .leaflet-control-zoom a:hover {
+    .leaflet-control-zoom a:hover,
+    .leaflet-control-fullscreen a:hover {
       opacity: 0.9;
     }
   </style>
@@ -120,7 +130,11 @@
   <div id="themeToggle">🌙</div>
   <div id="shipCounter"></div>
 
+  <!-- Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet Fullscreen -->
+  <script src="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.js"></script>
 
   <script>
     /* =========================
@@ -141,6 +155,11 @@
       fadeAnimation: true,
       markerZoomAnimation: true
     });
+
+    /* FULLSCREEN CONTROL */
+    map.addControl(new L.Control.Fullscreen({
+      position: "topleft"
+    }));
 
     const darkLayer = L.tileLayer(
       "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
