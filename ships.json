@@ -76,7 +76,7 @@
     { "mmsi": "309033000", "name": "Zuiderdam", "company_code": "HAL", "company_name": "Holland America Line" },
     { "mmsi": "309035000", "name": "Oosterdam", "company_code": "HAL", "company_name": "Holland America Line" },
     { "mmsi": "309039000", "name": "Westerdam", "company_code": "HAL", "company_name": "Holland America Line" },
-    { "mmsi": "309051000", "name": "Noordam", "company_code": "HAL", "company_name": "Holland America Line" },
+    { "mmsi": "246028000", "name": "Noordam", "company_code": "HAL", "company_name": "Holland America Line" },
     { "mmsi": "309071000", "name": "Eurodam", "company_code": "HAL", "company_name": "Holland America Line" },
     { "mmsi": "309095000", "name": "Koningsdam", "company_code": "HAL", "company_name": "Holland America Line" },
     { "mmsi": "309099000", "name": "Nieuw Statendam", "company_code": "HAL", "company_name": "Holland America Line" },
