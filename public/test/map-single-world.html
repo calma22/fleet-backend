@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Leaflet Test – Single World</title>
+  <title>Map Test – Providers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link
@@ -18,75 +18,100 @@
       height: 100%;
       background: #000;
       overflow: hidden;
+      font-family: Arial, sans-serif;
     }
 
     #map {
       width: 100vw;
       height: 100vh;
-      background: #000;
     }
 
-    #label {
+    #toolbar {
       position: fixed;
-      bottom: 12px;
+      top: 12px;
       left: 50%;
       transform: translateX(-50%);
-      font-family: Arial, sans-serif;
+      z-index: 1000;
+      background: rgba(0,0,0,0.55);
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: flex;
+      gap: 8px;
       font-size: 12px;
-      color: #aaa;
-      opacity: 0.6;
-      pointer-events: none;
+    }
+
+    #toolbar button {
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    #toolbar button:hover {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
-  <div id="map"></div>
-  <div id="label">TEST · single world · no backend</div>
+<div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<div id="toolbar">
+  <button data-layer="cartoDark">Carto Dark</button>
+  <button data-layer="cartoLight">Carto Light</button>
+  <button data-layer="esriDark">ESRI Dark</button>
+  <button data-layer="esriSat">ESRI Sat</button>
+  <button data-layer="stamen">Stamen</button>
+</div>
 
-  <script>
-    /*
-      OBIETTIVO:
-      - un solo mondo
-      - niente wrap orizzontale
-      - zoom basso
-      - vedere se compaiono bande nere / comportamenti strani
-    */
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    const map = L.map("map", {
-      zoomControl: true,
-      worldCopyJump: false,
-      minZoom: 2,
-      maxZoom: 8,
-      scrollWheelZoom: true,
-      zoomSnap: 0.25,
-      zoomDelta: 0.25
-    });
+<script>
+  const map = L.map("map", {
+    worldCopyJump: false,
+    minZoom: 2,
+    maxZoom: 8,
+    zoomSnap: 0.25,
+    zoomDelta: 0.25
+  });
 
-    // vista iniziale: mondo centrato
-    map.setView([20, 0], 2);
+  map.setView([20, 0], 2);
 
-    // tile layer SENZA wrap
-    L.tileLayer(
+  const layers = {
+    cartoDark: L.tileLayer(
       "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
-      {
-        noWrap: true,
-        attribution: "&copy; OSM & Carto"
-      }
-    ).addTo(map);
+      { noWrap: true }
+    ),
+    cartoLight: L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
+      { noWrap: true }
+    ),
+    esriDark: L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      { noWrap: true }
+    ),
+    esriSat: L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      { noWrap: true }
+    ),
+    stamen: L.tileLayer(
+      "https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
+      { noWrap: true }
+    )
+  };
 
-    // LOG DEBUG (solo per test)
-    map.on("moveend zoomend", () => {
-      const c = map.getCenter();
-      console.log(
-        "zoom:", map.getZoom().toFixed(2),
-        "lat:", c.lat.toFixed(2),
-        "lng:", c.lng.toFixed(2)
-      );
-    });
-  </script>
+  let currentLayer = layers.cartoDark;
+  currentLayer.addTo(map);
+
+  document.querySelectorAll("#toolbar button").forEach(btn => {
+    btn.onclick = () => {
+      map.removeLayer(currentLayer);
+      currentLayer = layers[btn.dataset.layer];
+      currentLayer.addTo(map);
+    };
+  });
+</script>
 
 </body>
 </html>
