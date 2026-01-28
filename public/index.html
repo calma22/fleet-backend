@@ -93,15 +93,17 @@
       pointer-events: none;
     }
 
-    /* ZOOM + FULLSCREEN CONTROLS (same style) */
+    /* ZOOM + FULLSCREEN CONTROLS */
     .leaflet-control-zoom,
-    .leaflet-control-fullscreen {
+    .leaflet-control-fullscreen,
+    .leaflet-control-reset {
       box-shadow: none !important;
       border: none !important;
     }
 
     .leaflet-control-zoom a,
-    .leaflet-control-fullscreen a {
+    .leaflet-control-fullscreen a,
+    .leaflet-control-reset a {
       background-color: rgba(0,0,0,0.55);
       color: #e5e5e5;
       width: 28px;
@@ -109,16 +111,21 @@
       line-height: 28px;
       font-size: 14px;
       opacity: 0.4;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
     }
 
     .leaflet-control-zoom a:hover,
-    .leaflet-control-fullscreen a:hover {
+    .leaflet-control-fullscreen a:hover,
+    .leaflet-control-reset a:hover {
       opacity: 0.9;
     }
-   /* SCRITTA MAPPA IN BASSO */
+
+    /* SCRITTA MAPPA IN BASSO */
     .leaflet-control-attribution {
       opacity: 0;
-    pointer-events: none;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -162,10 +169,10 @@
     });
 
     /* FULLSCREEN CONTROL */
-   map.addControl(
-    L.control.fullscreen({
-      position: "topleft",
-      fullscreenElement: document.body
+    map.addControl(
+      L.control.fullscreen({
+        position: "topleft",
+        fullscreenElement: document.body
       })
     );
 
@@ -184,15 +191,45 @@
     /* INITIAL VIEW – FULL HEIGHT */
     map.setView([20, 0], 2);
 
+    /* === AGGIUNTA MINIMA === */
+    let initialCenter = [20, 0];
+    let initialZoom;
+
     setTimeout(() => {
       const bounds = L.latLngBounds(
         L.latLng(-60, -180),
         L.latLng(85, 180)
       );
       const z = map.getBoundsZoom(bounds, true);
+      initialZoom = z;              // <-- unica riga nuova qui
       map.setZoom(z);
       map.setMinZoom(z);
     }, 0);
+
+    /* === TASTO RIPRISTINA VIEW === */
+    const ResetControl = L.Control.extend({
+      options: { position: "topleft" },
+      onAdd: function () {
+        const container = L.DomUtil.create(
+          "div",
+          "leaflet-control leaflet-control-reset"
+        );
+        const btn = L.DomUtil.create("a", "", container);
+        btn.innerHTML = "⌂";
+        btn.title = "Ripristina vista iniziale";
+
+        L.DomEvent.on(btn, "click", L.DomEvent.stop)
+          .on(btn, "click", () => {
+            if (initialZoom !== undefined) {
+              map.setView(initialCenter, initialZoom);
+            }
+          });
+
+        return container;
+      }
+    });
+
+    map.addControl(new ResetControl());
 
     /* THEME TOGGLE */
     let isDark = true;
