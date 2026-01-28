@@ -95,15 +95,13 @@
 
     /* ZOOM + FULLSCREEN CONTROLS */
     .leaflet-control-zoom,
-    .leaflet-control-fullscreen,
-    .leaflet-control-reset {
+    .leaflet-control-fullscreen {
       box-shadow: none !important;
       border: none !important;
     }
 
     .leaflet-control-zoom a,
-    .leaflet-control-fullscreen a,
-    .leaflet-control-reset a {
+    .leaflet-control-fullscreen a {
       background-color: rgba(0,0,0,0.55);
       color: #e5e5e5;
       width: 28px;
@@ -112,46 +110,19 @@
       font-size: 14px;
       opacity: 0.4;
       text-align: center;
-      cursor: pointer;
       text-decoration: none;
     }
 
     .leaflet-control-zoom a:hover,
-    .leaflet-control-fullscreen a:hover,
-    .leaflet-control-reset a:hover {
+    .leaflet-control-fullscreen a:hover {
       opacity: 0.9;
     }
 
-    /* SCRITTA MAPPA IN BASSO */
+    /* NASCONDI ATTRIBUTION */
     .leaflet-control-attribution {
       opacity: 0;
       pointer-events: none;
     }
-    
-    /* === ALLINEAMENTO RESET COME ZOOM === */
-    
-    /* stacca il reset dal suo box */
-    .leaflet-control-reset {
-      margin-top: 0 !important;
-    }
-    
-    /* rendilo stackabile come i bottoni zoom */
-    .leaflet-control-reset a {
-      border-radius: 0;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    
-    /* primo bottone: arrotonda sopra */
-    .leaflet-control-zoom a:first-child {
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-    }
-    
-    /* ultimo bottone (reset): arrotonda sotto */
-    .leaflet-control-reset a {
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
-    } 
   </style>
 </head>
 
@@ -213,10 +184,10 @@
 
     darkLayer.addTo(map);
 
-    /* INITIAL VIEW – FULL HEIGHT */
+    /* INITIAL VIEW */
     map.setView([20, 0], 2);
 
-    /* === AGGIUNTA MINIMA === */
+    // === AGGIUNTA: memorizziamo la view iniziale ===
     let initialCenter = [20, 0];
     let initialZoom;
 
@@ -226,35 +197,26 @@
         L.latLng(85, 180)
       );
       const z = map.getBoundsZoom(bounds, true);
-      initialZoom = z;              // <-- unica riga nuova qui
+      initialZoom = z;
       map.setZoom(z);
       map.setMinZoom(z);
-    }, 0);
 
-    /* === TASTO RIPRISTINA VIEW === */
-    const ResetControl = L.Control.extend({
-      options: { position: "topleft" },
-      onAdd: function () {
-        const container = L.DomUtil.create(
-          "div",
-          "leaflet-control leaflet-control-reset"
-        );
-        const btn = L.DomUtil.create("a", "", container);
-        btn.innerHTML = "⌂";
-        btn.title = "Ripristina vista iniziale";
+      // === AGGIUNTA: bottone reset DENTRO lo zoom ===
+      const zoomControl = document.querySelector('.leaflet-control-zoom');
+      if (zoomControl) {
+        const resetBtn = document.createElement('a');
+        resetBtn.innerHTML = '⌂';
+        resetBtn.title = 'Ripristina vista iniziale';
+        resetBtn.href = '#';
 
-        L.DomEvent.on(btn, "click", L.DomEvent.stop)
-          .on(btn, "click", () => {
-            if (initialZoom !== undefined) {
-              map.setView(initialCenter, initialZoom);
-            }
-          });
+        resetBtn.onclick = (e) => {
+          e.preventDefault();
+          map.setView(initialCenter, initialZoom);
+        };
 
-        return container;
+        zoomControl.appendChild(resetBtn);
       }
-    });
-
-    map.addControl(new ResetControl());
+    }, 0);
 
     /* THEME TOGGLE */
     let isDark = true;
@@ -324,7 +286,6 @@
       ships.forEach(ship => {
         if (ship.state === "LIVE") live++;
         if (ship.state === "RECENT") recent++;
-
         if (ship.lat == null || ship.lon == null) return;
 
         const tooltip =
