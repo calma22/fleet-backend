@@ -127,6 +127,31 @@
       opacity: 0;
       pointer-events: none;
     }
+    
+    /* === ALLINEAMENTO RESET COME ZOOM === */
+    
+    /* stacca il reset dal suo box */
+    .leaflet-control-reset {
+      margin-top: 0 !important;
+    }
+    
+    /* rendilo stackabile come i bottoni zoom */
+    .leaflet-control-reset a {
+      border-radius: 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    
+    /* primo bottone: arrotonda sopra */
+    .leaflet-control-zoom a:first-child {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+    
+    /* ultimo bottone (reset): arrotonda sotto */
+    .leaflet-control-reset a {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    } 
   </style>
 </head>
 
