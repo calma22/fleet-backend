@@ -2,14 +2,24 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+  <meta
+    name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0"
+  />
+
   <title>SMCS – Worldwide Safety</title>
 
   <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
 
   <!-- Leaflet Fullscreen -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.css"
+  />
 
   <style>
     * { box-sizing: border-box; }
@@ -23,6 +33,7 @@
       overflow: hidden;
     }
 
+    /* MAP */
     #map {
       position: fixed;
       inset: 0;
@@ -31,18 +42,23 @@
       background: #000;
     }
 
+    /* LOGO */
     #logo {
       position: fixed;
       top: 14px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 700;
+      text-align: center;
       pointer-events: none;
       opacity: 0.28;
-      text-align: center;
     }
 
-    #logo img { height: 56px; }
+    #logo img {
+      height: 56px;
+      display: block;
+      margin: 0 auto;
+    }
 
     #logo div {
       margin-top: 4px;
@@ -52,6 +68,7 @@
       color: #cfd6dc;
     }
 
+    /* THEME */
     #themeToggle {
       position: fixed;
       top: 14px;
@@ -60,8 +77,10 @@
       font-size: 20px;
       cursor: pointer;
       opacity: 0.85;
+      user-select: none;
     }
 
+    /* COUNTER */
     #shipCounter {
       position: fixed;
       bottom: 14px;
@@ -74,187 +93,202 @@
       pointer-events: none;
     }
 
+    /* ZOOM + FULLSCREEN CONTROLS (same style) */
     .leaflet-control-zoom,
-    .leaflet-control-fullscreen,
-    .leaflet-control-reset {
+    .leaflet-control-fullscreen {
       box-shadow: none !important;
       border: none !important;
     }
 
     .leaflet-control-zoom a,
-    .leaflet-control-fullscreen a,
-    .leaflet-control-reset a {
-      background-color: rgba(28,29,34,0.55);
+    .leaflet-control-fullscreen a {
+      background-color: rgba(0,0,0,0.55);
       color: #e5e5e5;
       width: 28px;
       height: 28px;
       line-height: 28px;
       font-size: 14px;
-      text-align: center;
-      cursor: pointer;
       opacity: 0.4;
-      text-decoration: none;
     }
 
     .leaflet-control-zoom a:hover,
-    .leaflet-control-fullscreen a:hover,
-    .leaflet-control-reset a:hover {
+    .leaflet-control-fullscreen a:hover {
       opacity: 0.9;
     }
-
+   /* SCRITTA MAPPA IN BASSO */
     .leaflet-control-attribution {
       opacity: 0;
-      pointer-events: none;
+    pointer-events: none;
     }
   </style>
 </head>
 
 <body>
 
-<div id="map"></div>
+  <div id="map"></div>
 
-<div id="logo">
-  <img src="logo-martec-marine.png">
-  <div>WORLDWIDE SAFETY</div>
-</div>
+  <div id="logo">
+    <img src="logo-martec-marine.png" alt="SMCS">
+    <div>WORLDWIDE SAFETY</div>
+  </div>
 
-<div id="themeToggle">🌙</div>
-<div id="shipCounter"></div>
+  <div id="themeToggle">🌙</div>
+  <div id="shipCounter"></div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.js"></script>
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script>
-  /* =========================
-     MAP INIT
-  ========================= */
+  <!-- Leaflet Fullscreen -->
+  <script src="https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.js"></script>
 
-  const map = L.map("map", {
-    zoomControl: true,
-    worldCopyJump: true,
-    scrollWheelZoom: true,
-    wheelDebounceTime: 120,
-    wheelPxPerZoomLevel: 140,
-    zoomSnap: 0.5,
-    zoomDelta: 0.5
-  });
+  <script>
+    /* =========================
+       MAP INIT – MARINETRAFFIC STYLE
+    ========================= */
 
-  let initialCenter = [20, 0];
-  let initialZoom;
+    const map = L.map("map", {
+      zoomControl: true,
+      worldCopyJump: true,
 
-  const darkLayer = L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
-    { noWrap: false }
-  ).addTo(map);
+      scrollWheelZoom: true,
+      wheelDebounceTime: 120,
+      wheelPxPerZoomLevel: 140,
+      zoomSnap: 0.5,
+      zoomDelta: 0.5,
 
-  const lightLayer = L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    { noWrap: false }
-  );
+      zoomAnimation: true,
+      fadeAnimation: true,
+      markerZoomAnimation: true
+    });
 
-  map.setView(initialCenter, 2);
-
-  setTimeout(() => {
-    const bounds = L.latLngBounds(
-      L.latLng(-60, -180),
-      L.latLng(85, 180)
-    );
-    initialZoom = map.getBoundsZoom(bounds, true);
-    map.setView(initialCenter, initialZoom);
-    map.setMinZoom(initialZoom);
-  }, 0);
-
-  /* FULLSCREEN */
-  map.addControl(
+    /* FULLSCREEN CONTROL */
+   map.addControl(
     L.control.fullscreen({
       position: "topleft",
       fullscreenElement: document.body
-    })
-  );
+      })
+    );
 
-  /* RESET VIEW CONTROL */
-  const ResetControl = L.Control.extend({
-    options: { position: 'topleft' },
-    onAdd: function () {
-      const container = L.DomUtil.create('div', 'leaflet-control leaflet-control-reset');
-      const btn = L.DomUtil.create('a', '', container);
-      btn.innerHTML = '⌂';
-      btn.title = 'Reset view';
+    const darkLayer = L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
+      { noWrap: false }
+    );
 
-      L.DomEvent.on(btn, 'click', L.DomEvent.stop)
-                .on(btn, 'click', () => {
-                  map.setView(initialCenter, initialZoom);
-                });
+    const lightLayer = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      { noWrap: false }
+    );
 
-      return container;
+    darkLayer.addTo(map);
+
+    /* INITIAL VIEW – FULL HEIGHT */
+    map.setView([20, 0], 2);
+
+    setTimeout(() => {
+      const bounds = L.latLngBounds(
+        L.latLng(-60, -180),
+        L.latLng(85, 180)
+      );
+      const z = map.getBoundsZoom(bounds, true);
+      map.setZoom(z);
+      map.setMinZoom(z);
+    }, 0);
+
+    /* THEME TOGGLE */
+    let isDark = true;
+    const themeToggle = document.getElementById("themeToggle");
+
+    themeToggle.onclick = () => {
+      if (isDark) {
+        map.removeLayer(darkLayer);
+        lightLayer.addTo(map);
+        themeToggle.textContent = "☀️";
+      } else {
+        map.removeLayer(lightLayer);
+        darkLayer.addTo(map);
+        themeToggle.textContent = "🌙";
+      }
+      isDark = !isDark;
+    };
+
+    /* SHIPS */
+    const shipLayer = L.layerGroup().addTo(map);
+
+    function companyFromName(name = "") {
+      const n = name.toUpperCase();
+      if (n.includes("MSC")) return "#0a84ff";
+      if (n.includes("COSTA")) return "#ffd200";
+      if (n.includes("CARNIVAL")) return "#ff453a";
+      if (n.includes("AIDA")) return "#ff6f00";
+      if (n.includes("DISNEY")) return "#bf5af2";
+      if (n.includes("VIKING")) return "#9e9e9e";
+      if (n.includes("PRINCESS")) return "#5b7db1";
+      if (n.includes("ROYAL")) return "#00205b";
+      if (n.includes("NORWEGIAN")) return "#1c8adb";
+      if (n.includes("VIRGIN")) return "#c8102e";
+      return "#9fa3a7";
     }
-  });
-  map.addControl(new ResetControl());
 
-  /* THEME */
-  let isDark = true;
-  document.getElementById("themeToggle").onclick = () => {
-    if (isDark) {
-      map.removeLayer(darkLayer);
-      lightLayer.addTo(map);
-      themeToggle.textContent = "☀️";
-    } else {
-      map.removeLayer(lightLayer);
-      darkLayer.addTo(map);
-      themeToggle.textContent = "🌙";
+    function shipIcon(heading = 0, name = "", state = "UNKNOWN") {
+      const opacity =
+        state === "LIVE" ? 1 :
+        state === "RECENT" ? 0.4 :
+        0.15;
+
+      return L.divIcon({
+        className: "",
+        html: `
+          <svg width="26" height="26" viewBox="0 0 24 24"
+               style="transform: rotate(${heading}deg); opacity:${opacity}">
+            <polygon points="12,2 21,22 12,18 3,22"
+                     fill="${companyFromName(name)}" />
+          </svg>
+        `,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13]
+      });
     }
-    isDark = !isDark;
-  };
 
-  /* SHIPS */
-  const shipLayer = L.layerGroup().addTo(map);
+    async function updateShips() {
+      const res = await fetch("/ships", { cache: "no-store" });
+      const ships = await res.json();
 
-  function companyFromName(name = "") {
-    const n = name.toUpperCase();
-    if (n.includes("MSC")) return "#0a84ff";
-    if (n.includes("COSTA")) return "#ffd200";
-    if (n.includes("DISNEY")) return "#bf5af2";
-    return "#9fa3a7";
-  }
+      shipLayer.clearLayers();
 
-  function shipIcon(heading, name, state) {
-    const opacity = state === "LIVE" ? 1 : state === "RECENT" ? 0.4 : 0.15;
-    return L.divIcon({
-      html: `
-        <svg width="26" height="26" viewBox="0 0 24 24"
-             style="transform: rotate(${heading}deg); opacity:${opacity}">
-          <polygon points="12,2 21,22 12,18 3,22"
-                   fill="${companyFromName(name)}" />
-        </svg>`,
-      iconSize: [26,26],
-      iconAnchor: [13,13]
-    });
-  }
+      let live = 0;
+      let recent = 0;
+      const total = ships.length;
 
-  async function updateShips() {
-    const res = await fetch("/ships", { cache: "no-store" });
-    const ships = await res.json();
+      ships.forEach(ship => {
+        if (ship.state === "LIVE") live++;
+        if (ship.state === "RECENT") recent++;
 
-    shipLayer.clearLayers();
+        if (ship.lat == null || ship.lon == null) return;
 
-    let live = 0, recent = 0;
+        const tooltip =
+          ship.state === "LIVE"
+            ? "LIVE"
+            : ship.state === "RECENT"
+            ? "Last seen < 12h"
+            : "No live position";
 
-    ships.forEach(s => {
-      if (s.state === "LIVE") live++;
-      if (s.state === "RECENT") recent++;
-      if (s.lat == null || s.lon == null) return;
+        L.marker([ship.lat, ship.lon], {
+          icon: shipIcon(ship.heading, ship.name, ship.state)
+        })
+        .addTo(shipLayer)
+        .bindTooltip(
+          `<b>${ship.name}</b><br>${tooltip}`,
+          { direction: "top" }
+        );
+      });
 
-      L.marker([s.lat, s.lon], {
-        icon: shipIcon(s.heading, s.name, s.state)
-      }).addTo(shipLayer);
-    });
+      document.getElementById("shipCounter").textContent =
+        `${live} live · ${recent} recent · ${total} total`;
+    }
 
-    shipCounter.textContent = `${live} live · ${recent} recent · ${ships.length} total`;
-  }
-
-  updateShips();
-  setInterval(updateShips, 30000);
-</script>
+    updateShips();
+    setInterval(updateShips, 30000);
+  </script>
 
 </body>
 </html>
