@@ -107,7 +107,7 @@
     { "mmsi": "311001229", "name": "Queen Anne", "company_code": "CUNARD", "company_name": "Cunard" },
     { "mmsi": "311000002", "name": "Queen Mary 2", "company_code": "CUNARD", "company_name": "Cunard" },
 
-    { "mmsi": "311001140", "name": "Icon of the Seas", "company_code": "ROYAL", "company_name": "Royal Caribbean" },
+    { "mmsi": "311001178", "name": "Icon of the Seas", "company_code": "ROYAL", "company_name": "Royal Caribbean" },
     { "mmsi": "311001551", "name": "Star of the Seas", "company_code": "ROYAL", "company_name": "Royal Caribbean" },
 
     { "mmsi": "311000732", "name": "Scarlet Lady", "company_code": "VIRGIN", "company_name": "Virgin Cruise" },
