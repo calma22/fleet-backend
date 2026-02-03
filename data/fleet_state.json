@@ -92,11 +92,11 @@
   {
     "mmsi": "247094800",
     "name": "Costa Fortuna",
-    "lat": 28.668465,
-    "lon": -15.591285,
-    "speed": 18.8,
-    "heading": 79.8,
-    "lastSeen": 1770077976551,
+    "lat": 28.776695,
+    "lon": -14.64962,
+    "speed": 18.7,
+    "heading": 81.9,
+    "lastSeen": 1770087533726,
     "state": "LIVE"
   },
   {
@@ -132,11 +132,11 @@
   {
     "mmsi": "247229700",
     "name": "AIDAbella",
-    "lat": 43.34346166666667,
-    "lon": 5.3411,
+    "lat": 43.343471666666666,
+    "lon": 5.341115,
     "speed": 0,
-    "heading": 236.3,
-    "lastSeen": 1770077997282,
+    "heading": 169.7,
+    "lastSeen": 1770093699937,
     "state": "LIVE"
   },
   {
@@ -212,22 +212,22 @@
   {
     "mmsi": "247313500",
     "name": "Costa Fascinosa",
-    "lat": 18.471668333333334,
-    "lon": -69.87751333333334,
-    "speed": 0,
-    "heading": 201,
-    "lastSeen": 1770077939266,
+    "lat": 18.384028333333333,
+    "lon": -69.940635,
+    "speed": 17.4,
+    "heading": 212.6,
+    "lastSeen": 1770091373213,
     "state": "LIVE"
   },
   {
     "mmsi": "247322800",
     "name": "AIDAstella",
-    "lat": null,
-    "lon": null,
-    "speed": null,
-    "heading": null,
-    "lastSeen": null,
-    "state": "UNKNOWN"
+    "lat": -33.910125,
+    "lon": 18.426391666666667,
+    "speed": 0,
+    "heading": 221.5,
+    "lastSeen": 1770093700091,
+    "state": "LIVE"
   },
   {
     "mmsi": "247353700",
@@ -242,31 +242,31 @@
   {
     "mmsi": "247353800",
     "name": "AIDAprima",
-    "lat": 56.128296666666664,
-    "lon": 11.202613333333334,
-    "speed": 11.3,
-    "heading": 45.3,
-    "lastSeen": 1770068009986,
+    "lat": 55.96271166666667,
+    "lon": 12.696638333333334,
+    "speed": 10.3,
+    "heading": 154,
+    "lastSeen": 1770093969824,
     "state": "LIVE"
   },
   {
     "mmsi": "247385300",
     "name": "AIDAperla",
-    "lat": null,
-    "lon": null,
-    "speed": null,
-    "heading": null,
-    "lastSeen": null,
-    "state": "UNKNOWN"
+    "lat": 12.055533333333333,
+    "lon": -68.06699499999999,
+    "speed": 12.7,
+    "heading": 65.2,
+    "lastSeen": 1770087813139,
+    "state": "LIVE"
   },
   {
     "mmsi": "247389200",
     "name": "AIDAnova",
-    "lat": 52.01628166666667,
-    "lon": 2.87801,
-    "speed": 13.4,
-    "heading": 266.1,
-    "lastSeen": 1770077980174,
+    "lat": 51.42133666666667,
+    "lon": 2.8171749999999998,
+    "speed": 14.4,
+    "heading": 83.5,
+    "lastSeen": 1770093989883,
     "state": "LIVE"
   },
   {
@@ -283,10 +283,10 @@
     "mmsi": "247431200",
     "name": "Costa Toscana",
     "lat": 43.352650000000004,
-    "lon": 5.320373333333333,
+    "lon": 5.32037,
     "speed": 0,
     "heading": 0,
-    "lastSeen": 1770075882892,
+    "lastSeen": 1770093884247,
     "state": "LIVE"
   },
   {
@@ -312,11 +312,11 @@
   {
     "mmsi": "248392000",
     "name": "MSC Seaside",
-    "lat": 25.768089999999997,
-    "lon": -79.93964833333332,
-    "speed": 7.7,
-    "heading": 95.1,
-    "lastSeen": 1770077948485,
+    "lat": 25.76085833333333,
+    "lon": -79.77200833333333,
+    "speed": 8.3,
+    "heading": 95.4,
+    "lastSeen": 1770081907358,
     "state": "LIVE"
   },
   {
@@ -362,11 +362,11 @@
   {
     "mmsi": "249033000",
     "name": "MSC Bellissima",
-    "lat": 1.2659833333333335,
-    "lon": 103.87831166666666,
-    "speed": 0.1,
-    "heading": 90.5,
-    "lastSeen": 1770074588682,
+    "lat": 1.26597,
+    "lon": 103.87841166666666,
+    "speed": 0.3,
+    "heading": 273.1,
+    "lastSeen": 1770092769083,
     "state": "LIVE"
   },
   {
@@ -483,10 +483,10 @@
     "mmsi": "257128500",
     "name": "Viking Venus",
     "lat": 59.413561666666666,
-    "lon": 5.262316666666666,
+    "lon": 5.26234,
     "speed": 0,
-    "heading": 329.5,
-    "lastSeen": 1770077943864,
+    "heading": 291.3,
+    "lastSeen": 1770094014543,
     "state": "LIVE"
   },
   {
@@ -587,7 +587,7 @@
     "speed": 16.8,
     "heading": 60.3,
     "lastSeen": 1770035318927,
-    "state": "LIVE"
+    "state": "RECENT"
   },
   {
     "mmsi": "308516000",
@@ -712,12 +712,12 @@
   {
     "mmsi": "310529000",
     "name": "Island Princess",
-    "lat": 22.285478333333334,
-    "lon": 114.235805,
-    "speed": 9.5,
-    "heading": 121.3,
-    "lastSeen": 1769771503077,
-    "state": "RECENT"
+    "lat": 22.29933,
+    "lon": 114.214495,
+    "speed": 1.6,
+    "heading": 252.1,
+    "lastSeen": 1770081503972,
+    "state": "LIVE"
   },
   {
     "mmsi": "310530000",
@@ -762,11 +762,11 @@
   {
     "mmsi": "310547000",
     "name": "Arcadia",
-    "lat": 43.541825,
-    "lon": 10.296600000000002,
+    "lat": 43.54182,
+    "lon": 10.296598333333332,
     "speed": 0,
     "heading": 94.7,
-    "lastSeen": 1770077917812,
+    "lastSeen": 1770093940224,
     "state": "LIVE"
   },
   {
@@ -782,11 +782,11 @@
   {
     "mmsi": "310562000",
     "name": "Sapphire Princess",
-    "lat": 37.8286,
-    "lon": -28.115858333333332,
-    "speed": 17.7,
-    "heading": 59.4,
-    "lastSeen": 1770077950352,
+    "lat": 38.46299833333333,
+    "lon": -26.718386666666667,
+    "speed": 18,
+    "heading": 53.5,
+    "lastSeen": 1770093106374,
     "state": "LIVE"
   },
   {
@@ -1052,11 +1052,11 @@
   {
     "mmsi": "311000859",
     "name": "Discovery Princess",
-    "lat": 54.30647,
-    "lon": -130.34511833333332,
+    "lat": 54.30646166666667,
+    "lon": -130.34506666666667,
     "speed": 0,
     "heading": 253.3,
-    "lastSeen": 1770077857263,
+    "lastSeen": 1770093696650,
     "state": "LIVE"
   },
   {
@@ -1227,7 +1227,7 @@
     "speed": 11.8,
     "heading": 190.2,
     "lastSeen": 1770035716062,
-    "state": "LIVE"
+    "state": "RECENT"
   },
   {
     "mmsi": "311019600",
@@ -1272,21 +1272,21 @@
   {
     "mmsi": "352003546",
     "name": "Costa Firenze",
-    "lat": 33.34950666666666,
-    "lon": -118.31791,
-    "speed": 0,
-    "heading": 160.6,
-    "lastSeen": 1770078003341,
+    "lat": 33.01177,
+    "lon": -117.881895,
+    "speed": 10.1,
+    "heading": 148.1,
+    "lastSeen": 1770093963406,
     "state": "LIVE"
   },
   {
     "mmsi": "355263000",
     "name": "Carnival Radiance",
-    "lat": 33.64378,
-    "lon": -118.21224833333333,
-    "speed": 11.7,
-    "heading": 185.4,
-    "lastSeen": 1770077956170,
+    "lat": 32.426790000000004,
+    "lon": -117.68270833333332,
+    "speed": 20.4,
+    "heading": 159.8,
+    "lastSeen": 1770093992471,
     "state": "LIVE"
   },
   {
@@ -1402,11 +1402,11 @@
   {
     "mmsi": "538003578",
     "name": "Ocean Princess",
-    "lat": 32.93456666666667,
-    "lon": -124.53936666666667,
-    "speed": 12.8,
-    "heading": 148,
-    "lastSeen": 1770075724437,
+    "lat": 32.159349999999996,
+    "lon": -123.95966666666666,
+    "speed": 12.5,
+    "heading": 145,
+    "lastSeen": 1770091204704,
     "state": "LIVE"
   },
   {
