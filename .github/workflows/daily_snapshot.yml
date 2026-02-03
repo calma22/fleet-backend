@@ -1,0 +1,27 @@
+name: Daily fleet snapshot
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch fleet state
+        run: |
+          curl -s https://nodejs-production-4f49.up.railway.app/ships \
+          | jq '.' > data/fleet_state.json
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "fleet-bot"
+          git config user.email "fleet-bot@users.noreply.github.com"
+          git add data/fleet_state.json
+          git commit -m "daily fleet snapshot" || echo "No changes"
+          git push
