@@ -18,22 +18,46 @@ const fleetConfig = JSON.parse(
 
 /* ==============================
    PRE-POPULATE FLEET (IN MEMORY)
+   + BOOTSTRAP FROM SNAPSHOT
 ================================ */
 const ships = {};
+const SNAPSHOT_FILE = "./data/fleet_state.json";
 
+// 1️⃣ carica snapshot se esiste
+if (fs.existsSync(SNAPSHOT_FILE)) {
+  try {
+    const snapshot = JSON.parse(
+      fs.readFileSync(SNAPSHOT_FILE, "utf-8")
+    );
+
+    snapshot.forEach(ship => {
+      ships[ship.mmsi] = ship;
+    });
+
+    console.log(
+      `🟢 BOOTSTRAP: caricate ${snapshot.length} navi da snapshot`
+    );
+  } catch (err) {
+    console.error("🔴 Errore lettura snapshot", err);
+  }
+}
+
+// 2️⃣ assicura che tutte le navi del config esistano
 fleetConfig.fleet.forEach(ship => {
-  ships[ship.mmsi] = {
-    mmsi: ship.mmsi,
-    name: ship.name,
+  if (!ships[ship.mmsi]) {
+    ships[ship.mmsi] = {
+      mmsi: ship.mmsi,
+      name: ship.name,
 
-    lat: null,
-    lon: null,
-    speed: null,
-    heading: null,
+      lat: null,
+      lon: null,
+      speed: null,
+      heading: null,
 
-    lastSeen: null,
-    state: "UNKNOWN" // LIVE | RECENT | UNKNOWN
-  };
+      lastSeen: null,
+      state: "UNKNOWN" // LIVE | RECENT | UNKNOWN
+    };
+  }
 });
 
 /* ==============================
@@ -114,7 +138,7 @@ function scheduleReconnect() {
       ws?.terminate();
     } catch {}
     connectAISStream();
-  }, 5000); // 5 secondi
+  }, 5000);
 }
 
 /* ==============================
