@@ -240,17 +240,39 @@
 
     function companyFromName(name = "") {
       const n = name.toUpperCase();
-      if (n.includes("MSC")) return "#000033";
-      if (n.includes("COSTA")) return "#FFD619";
-      if (n.includes("CARNIVAL")) return "#CC0033";
-      if (n.includes("AIDA")) return "#196FC3";
-      if (n.includes("DISNEY")) return "#036684";
-      if (n.includes("VIKING")) return "#6B1638";
-      if (n.includes("PRINCESS")) return "#013596";
-      if (n.includes("ROYAL")) return "#013596";
-      if (n.includes("NORWEGIAN")) return "#354E60";
-      if (n.includes("VIRGIN")) return "#AA0876";
-      return "#9fa3a7";
+if (n.includes("MSC")) return "#4FA3D1";          // azzurro mare (più visibile del blu notte)
+
+if (n.includes("COSTA")) return "#FFD619";       // ❌ NON TOCCATO
+if (n.includes("CARNIVAL")) return "#CC0033";    // ❌ NON TOCCATO
+if (n.includes("AIDA")) return "#196FC3";        // ❌ NON TOCCATO
+
+if (n.includes("DISNEY")) return "#FF6F61";      // rosso corallo Disney
+if (n.includes("VIKING")) return "#C94C6A";      // bordeaux chiaro (meno cupo)
+if (n.includes("PRINCESS")) return "#B388EB";    // viola lavanda
+if (n.includes("ROYAL")) return "#5DA9E9";       // royal blue chiaro
+if (n.includes("NORWEGIAN")) return "#2EC4B6";   // teal brillante
+
+if (n.includes("VIRGIN")) return "#AA0876";      // ❌ NON TOCCATO
+
+// Luxury / premium / misc → palette soft e leggibile
+if (n.includes("PO")) return "#4E8098";
+if (n.includes("POAUS")) return "#4E8098";
+if (n.includes("HAL")) return "#7FB77E";
+if (n.includes("CUNARD")) return "#8E6F3E";      // oro spento (elegante)
+if (n.includes("NCL")) return "#2EC4B6";         // coerente con Norwegian
+if (n.includes("CMV")) return "#8FB8AA";
+if (n.includes("SILVERSEA")) return "#9AD1D4";
+if (n.includes("SEABOURN")) return "#A3BFD9";
+if (n.includes("PONANT")) return "#6ED3CF";
+if (n.includes("AZAMARA")) return "#9C89B8";
+if (n.includes("TUI")) return "#70C1E3";
+if (n.includes("RITZ")) return "#CFAE70";        // luxury chiaro
+if (n.includes("HAPAG")) return "#6BAED6";
+if (n.includes("PEACEBOAT")) return "#8FD694";
+if (n.includes("ADORA")) return "#F4A6C1";
+
+return "#9fa3a7"; // nessuna compagnia
+
     }
 
     function shipIcon(heading = 0, name = "", state = "UNKNOWN") {
